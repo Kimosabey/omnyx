@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint scaffold
+        run: make lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test scaffold
+        run: make test
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build scaffold
+        run: make build
+
+  integration:
+    runs-on: ubuntu-latest
+    needs: [lint, test, docker-build]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Smoke scaffold
+        run: pwsh -File scripts/smoke.ps1
+
+  release-gate:
+    runs-on: ubuntu-latest
+    needs: [integration]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acceptance gate scaffold
+        run: pwsh -File scripts/release-gate.ps1

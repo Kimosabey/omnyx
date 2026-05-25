@@ -1,0 +1,10 @@
+bundle_id: demo-synthetic
+site_id: demo-campus
+profile: synthetic
+protocol: bacnet
+devices:
+  - id: DDC09
+    label: Chiller 1
+    points:
+      - id: chiller_1.evap_leaving_temp
+      - id: chiller_1.kw_per_tr

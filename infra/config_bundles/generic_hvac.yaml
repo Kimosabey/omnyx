@@ -1,0 +1,11 @@
+bundle_id: generic-hvac
+site_id: generic-hvac-site
+profile: hvac
+protocol: bacnet
+equipment_types:
+  - chiller
+  - ahu
+  - pump
+defaults:
+  timezone: Asia/Kolkata
+  dq_policy: hvac-standard

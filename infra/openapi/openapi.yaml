@@ -1,0 +1,44 @@
+openapi: 3.1.0
+info:
+  title: OMNYX API
+  version: 0.1.0
+  description: Phase 1 scaffold for the REST and WebSocket-backed operator contract.
+servers:
+  - url: http://localhost:8000
+paths:
+  /healthz:
+    get:
+      summary: Service health
+      responses:
+        "200":
+          description: Health response
+  /equipment:
+    get:
+      summary: Equipment tree
+      responses:
+        "200":
+          description: Equipment hierarchy
+  /telemetry/latest:
+    get:
+      summary: Latest point values
+      parameters:
+        - in: query
+          name: device_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Latest telemetry payload
+  /agents/run:
+    post:
+      summary: Start an agentic workflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "202":
+          description: Accepted

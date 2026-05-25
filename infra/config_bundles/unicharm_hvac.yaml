@@ -1,0 +1,11 @@
+bundle_id: unicharm-hvac
+site_id: unicharm
+profile: thermynx
+protocol: bacnet
+legacy_import:
+  source: mysql
+  replay_service: dal-replay
+defaults:
+  timezone: Asia/Kolkata
+  twin_model: chiller_v1
+  rl_agent: chiller_efficiency_v1
