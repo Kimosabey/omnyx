@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: api-service
+    static_configs:
+      - targets: ["api-service:8000"]
+
+  - job_name: ws-bridge
+    static_configs:
+      - targets: ["ws-bridge:8765"]
+
+  - job_name: twin-broker
+    static_configs:
+      - targets: ["twin-broker:8000"]
+
+  - job_name: rl-broker
+    static_configs:
+      - targets: ["rl-broker:8000"]
+
+  - job_name: agentic-ai
+    static_configs:
+      - targets: ["agentic-ai:8000"]

@@ -1,0 +1,27 @@
+{
+  "realm": "omnyx",
+  "enabled": true,
+  "displayName": "OMNYX",
+  "roles": {
+    "realm": [
+      { "name": "platform_admin" },
+      { "name": "site_operator" },
+      { "name": "technician" },
+      { "name": "approver" },
+      { "name": "viewer" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "omnyx-frontend",
+      "publicClient": true,
+      "redirectUris": ["http://localhost/*"],
+      "webOrigins": ["http://localhost"]
+    },
+    {
+      "clientId": "omnyx-api",
+      "publicClient": false,
+      "secret": "change-me"
+    }
+  ]
+}

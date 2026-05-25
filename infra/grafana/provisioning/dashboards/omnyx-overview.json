@@ -1,0 +1,39 @@
+{
+  "title": "OMNYX Overview",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "title": "API Up",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "up{job=\"api-service\"}"
+        }
+      ],
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 2,
+      "title": "WebSocket Up",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "up{job=\"ws-bridge\"}"
+        }
+      ],
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      }
+    }
+  ]
+}
