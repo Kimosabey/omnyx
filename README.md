@@ -14,6 +14,8 @@ OMNYX delivers the v1.1 product described in [`docs/source/prd/CloudOps_Core_PRD
 
 **For service URLs, credentials, and how to use each component**, see [`SERVICES.md`](./SERVICES.md).
 
+**For the honest architecture rationale, pros/cons, risk register, and on-site usage scenarios**, see [`ARCHITECTURE_RATIONALE.md`](./ARCHITECTURE_RATIONALE.md) — read this *before* committing to SLAs or paying-customer launches.
+
 ---
 
 ## What's In This Repository
