@@ -1,0 +1,80 @@
+{
+  "title": "OMNYX — Live Telemetry",
+  "uid": "omnyx-telemetry",
+  "version": 1,
+  "schemaVersion": 38,
+  "refresh": "5s",
+  "time": { "from": "now-30m", "to": "now" },
+  "tags": ["omnyx", "telemetry", "bacnet"],
+  "panels": [
+    {
+      "id": 1, "type": "stat", "gridPos": {"x":0,"y":0,"w":4,"h":3},
+      "title": "Total Readings in DB",
+      "options": { "colorMode":"background","graphMode":"area","reduceOptions":{"calcs":["lastNotNull"]} },
+      "fieldConfig": { "defaults": { "unit":"short","color":{"mode":"fixed","fixedColor":"blue"} } },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"dbwriter_readings_written_total","legendFormat":"total"}]
+    },
+    {
+      "id": 2, "type": "stat", "gridPos": {"x":4,"y":0,"w":4,"h":3},
+      "title": "Points Published / min",
+      "options": { "colorMode":"background","graphMode":"area","reduceOptions":{"calcs":["lastNotNull"]} },
+      "fieldConfig": { "defaults": { "unit":"short","color":{"mode":"thresholds"},"thresholds":{"steps":[{"color":"red","value":null},{"color":"green","value":200}]} } },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"rate(dal_points_published_total[1m])*60","legendFormat":"pts/min"}]
+    },
+    {
+      "id": 3, "type": "stat", "gridPos": {"x":8,"y":0,"w":4,"h":3},
+      "title": "Active DDCs",
+      "options": { "colorMode":"background","graphMode":"none","reduceOptions":{"calcs":["lastNotNull"]} },
+      "fieldConfig": { "defaults": { "unit":"short","color":{"mode":"thresholds"},"thresholds":{"steps":[{"color":"red","value":null},{"color":"yellow","value":8},{"color":"green","value":11}]} } },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_devices_active","legendFormat":"active"}]
+    },
+    {
+      "id": 4, "type": "stat", "gridPos": {"x":12,"y":0,"w":4,"h":3},
+      "title": "Poll Cycle Time",
+      "options": { "colorMode":"background","graphMode":"area","reduceOptions":{"calcs":["lastNotNull"]} },
+      "fieldConfig": { "defaults": { "unit":"s","color":{"mode":"thresholds"},"thresholds":{"steps":[{"color":"green","value":null},{"color":"yellow","value":1},{"color":"red","value":3}]} } },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_read_latency_seconds","legendFormat":"cycle s"}]
+    },
+    {
+      "id": 10, "type": "timeseries", "gridPos": {"x":0,"y":3,"w":24,"h":8},
+      "title": "Readings Written to DB (per minute)",
+      "options": { "legend":{"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit":"short","custom":{"lineWidth":2,"fillOpacity":20} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"rate(dbwriter_readings_written_total[1m])*60","legendFormat":"readings/min"},
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"rate(dbwriter_flushes_total[1m])*60","legendFormat":"flushes/min"}
+      ]
+    },
+    {
+      "id": 11, "type": "timeseries", "gridPos": {"x":0,"y":11,"w":12,"h":8},
+      "title": "DAL-BACnet — Active vs Offline DDCs",
+      "options": { "legend":{"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit":"short","custom":{"lineWidth":2} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_devices_active","legendFormat":"active"},
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_devices_offline","legendFormat":"offline"}
+      ]
+    },
+    {
+      "id": 12, "type": "timeseries", "gridPos": {"x":12,"y":11,"w":12,"h":8},
+      "title": "Points Published Total (cumulative)",
+      "options": { "legend":{"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit":"short","custom":{"lineWidth":2,"fillOpacity":10} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_points_published_total","legendFormat":"total published"}
+      ]
+    },
+    {
+      "id": 20, "type": "logs", "gridPos": {"x":0,"y":19,"w":12,"h":8},
+      "title": "DAL-BACnet Logs",
+      "options": {"dedupStrategy":"none","showLabels":false,"showTime":true,"sortOrder":"Descending","wrapLogMessage":false},
+      "targets": [{"datasource":{"uid":"omnyx-loki"},"expr":"{compose_service=\"dal-bacnet\"}","legendFormat":""}]
+    },
+    {
+      "id": 21, "type": "logs", "gridPos": {"x":12,"y":19,"w":12,"h":8},
+      "title": "DB-Writer Logs",
+      "options": {"dedupStrategy":"none","showLabels":false,"showTime":true,"sortOrder":"Descending","wrapLogMessage":false},
+      "targets": [{"datasource":{"uid":"omnyx-loki"},"expr":"{compose_service=\"db-writer\"}","legendFormat":""}]
+    }
+  ]
+}

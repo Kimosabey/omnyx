@@ -1,39 +1,149 @@
 {
-  "title": "OMNYX Overview",
-  "schemaVersion": 39,
-  "version": 1,
+  "title": "OMNYX — Platform Overview",
+  "uid": "omnyx-overview",
+  "version": 2,
+  "schemaVersion": 38,
+  "refresh": "10s",
+  "time": { "from": "now-1h", "to": "now" },
+  "tags": ["omnyx", "overview"],
   "panels": [
     {
-      "id": 1,
-      "title": "API Up",
-      "type": "stat",
-      "targets": [
-        {
-          "expr": "up{job=\"api-service\"}"
+      "id": 1, "type": "stat", "gridPos": {"x":0,"y":0,"w":4,"h":4},
+      "title": "API — Request Rate",
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": {"calcs":["lastNotNull"]} },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps", "color": {"mode":"thresholds"},
+          "thresholds": {"steps":[{"color":"green","value":null},{"color":"yellow","value":50},{"color":"red","value":200}]}
         }
-      ],
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 0
-      }
+      },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"sum(rate(http_requests_total[1m]))","legendFormat":"req/s"}]
     },
     {
-      "id": 2,
-      "title": "WebSocket Up",
-      "type": "stat",
-      "targets": [
-        {
-          "expr": "up{job=\"ws-bridge\"}"
+      "id": 2, "type": "stat", "gridPos": {"x":4,"y":0,"w":4,"h":4},
+      "title": "API — P95 Latency",
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": {"calcs":["lastNotNull"]} },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms", "color": {"mode":"thresholds"},
+          "thresholds": {"steps":[{"color":"green","value":null},{"color":"yellow","value":200},{"color":"red","value":1000}]}
         }
-      ],
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      }
+      },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) * 1000","legendFormat":"p95 ms"}]
+    },
+    {
+      "id": 3, "type": "stat", "gridPos": {"x":8,"y":0,"w":4,"h":4},
+      "title": "DB-Writer — Readings/min",
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": {"calcs":["lastNotNull"]} },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short", "color": {"mode":"thresholds"},
+          "thresholds": {"steps":[{"color":"red","value":null},{"color":"yellow","value":100},{"color":"green","value":300}]}
+        }
+      },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"rate(dbwriter_readings_written_total[1m]) * 60","legendFormat":"readings/min"}]
+    },
+    {
+      "id": 4, "type": "stat", "gridPos": {"x":12,"y":0,"w":4,"h":4},
+      "title": "Services Up",
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs":["lastNotNull"]} },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short", "color": {"mode":"thresholds"},
+          "thresholds": {"steps":[{"color":"red","value":null},{"color":"yellow","value":2},{"color":"green","value":3}]}
+        }
+      },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"count(up == 1)","legendFormat":"up"}]
+    },
+    {
+      "id": 5, "type": "stat", "gridPos": {"x":16,"y":0,"w":4,"h":4},
+      "title": "DAL-BACnet — Active DDCs",
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs":["lastNotNull"]} },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short", "color": {"mode":"thresholds"},
+          "thresholds": {"steps":[{"color":"red","value":null},{"color":"yellow","value":5},{"color":"green","value":11}]}
+        }
+      },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_devices_active","legendFormat":"active DDCs"}]
+    },
+    {
+      "id": 6, "type": "stat", "gridPos": {"x":20,"y":0,"w":4,"h":4},
+      "title": "DAL-BACnet — Offline DDCs",
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs":["lastNotNull"]} },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short", "color": {"mode":"thresholds"},
+          "thresholds": {"steps":[{"color":"green","value":null},{"color":"yellow","value":1},{"color":"red","value":3}]}
+        }
+      },
+      "targets": [{"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_devices_offline","legendFormat":"offline DDCs"}]
+    },
+    {
+      "id": 10, "type": "timeseries", "gridPos": {"x":0,"y":4,"w":12,"h":8},
+      "title": "API — Request Rate by Status Code",
+      "options": { "legend": {"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": {"lineWidth":2,"fillOpacity":10} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"sum(rate(http_requests_total[1m])) by (status_code)","legendFormat":"HTTP {{status_code}}"}
+      ]
+    },
+    {
+      "id": 11, "type": "timeseries", "gridPos": {"x":12,"y":4,"w":12,"h":8},
+      "title": "API — Latency Percentiles",
+      "options": { "legend": {"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit": "ms", "custom": {"lineWidth":2,"fillOpacity":10} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) * 1000","legendFormat":"p50"},
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) * 1000","legendFormat":"p95"},
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) * 1000","legendFormat":"p99"}
+      ]
+    },
+    {
+      "id": 12, "type": "timeseries", "gridPos": {"x":0,"y":12,"w":12,"h":8},
+      "title": "DB-Writer — Throughput",
+      "options": { "legend": {"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit": "short", "custom": {"lineWidth":2,"fillOpacity":15} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"rate(dbwriter_readings_written_total[1m]) * 60","legendFormat":"readings/min"},
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"rate(dbwriter_flushes_total[1m]) * 60","legendFormat":"flushes/min"}
+      ]
+    },
+    {
+      "id": 13, "type": "timeseries", "gridPos": {"x":12,"y":12,"w":12,"h":8},
+      "title": "DAL-BACnet — Poll Cycle Latency",
+      "options": { "legend": {"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit": "s", "custom": {"lineWidth":2,"fillOpacity":10} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"dal_read_latency_seconds","legendFormat":"poll latency s"}
+      ]
+    },
+    {
+      "id": 14, "type": "timeseries", "gridPos": {"x":0,"y":20,"w":12,"h":8},
+      "title": "DB-Writer — Flush Latency",
+      "options": { "legend": {"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit": "ms", "custom": {"lineWidth":2,"fillOpacity":10} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"histogram_quantile(0.95, rate(dbwriter_flush_latency_seconds_bucket[5m])) * 1000","legendFormat":"p95 flush ms"},
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"histogram_quantile(0.50, rate(dbwriter_flush_latency_seconds_bucket[5m])) * 1000","legendFormat":"p50 flush ms"}
+      ]
+    },
+    {
+      "id": 15, "type": "timeseries", "gridPos": {"x":12,"y":20,"w":12,"h":8},
+      "title": "Process Memory — All Services",
+      "options": { "legend": {"displayMode":"list","placement":"bottom"} },
+      "fieldConfig": { "defaults": { "unit": "bytes", "custom": {"lineWidth":1,"fillOpacity":5} } },
+      "targets": [
+        {"datasource":{"uid":"omnyx-prometheus"},"expr":"process_resident_memory_bytes","legendFormat":"{{job}}"}
+      ]
+    },
+    {
+      "id": 20, "type": "logs", "gridPos": {"x":0,"y":28,"w":24,"h":10},
+      "title": "Live Errors — All Services",
+      "options": { "dedupStrategy":"none","showLabels":true,"showTime":true,"sortOrder":"Descending","wrapLogMessage":true },
+      "targets": [
+        {"datasource":{"uid":"omnyx-loki"},"expr":"{job=\"docker\"} |= \"ERROR\" | logfmt","legendFormat":""}
+      ]
     }
   ]
 }

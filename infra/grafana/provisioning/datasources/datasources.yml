@@ -3,11 +3,17 @@ apiVersion: 1
 datasources:
   - name: Prometheus
     type: prometheus
+    uid: omnyx-prometheus
     access: proxy
     url: http://prometheus:9090
     isDefault: true
+    jsonData:
+      timeInterval: "15s"
 
   - name: Loki
     type: loki
+    uid: omnyx-loki
     access: proxy
     url: http://loki:3100
+    jsonData:
+      maxLines: 1000
