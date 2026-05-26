@@ -1,6 +1,6 @@
-# 08a · Database Design (PostgreSQL only)
+# 08a · Database Design (PostgreSQL only — 2 instances)
 
-> One sentence: **OMNYX runs on one PostgreSQL 16 cluster with TimescaleDB + pgvector. No MySQL. Unicharm MySQL is a one-time reference for the bulk back-fill — after cutover the OMNYX runtime has zero MySQL dependencies.**
+> One sentence: **OMNYX runs on TWO PostgreSQL 16 instances — a pure `postgres` (with pgvector) for source + app + audit + embeddings, and a `timescaledb` for the time-series telemetry layer. No MySQL anywhere. Unicharm IBMS data is modelled in the `source` schema of the primary DB — after cutover the OMNYX runtime has zero MySQL dependencies.**
 
 This is the deep-dive design doc. Bring-up DDL and the storage overview live in [`08_STORAGE_TIMESCALEDB.md`](08_STORAGE_TIMESCALEDB.md).
 
@@ -8,16 +8,18 @@ This is the deep-dive design doc. Bring-up DDL and the storage overview live in 
 
 ## 1 · Design principles
 
-1. **One database, four schemas.** Backups, replication, HA and connection pooling stay simple.
+1. **Two databases, separated by access pattern.** Pure PG16 (`postgres`) holds OLTP and source-of-truth data; TimescaleDB (`timescaledb`) holds high-volume time-series. Backups, retention, and scaling policies can differ per workload. The api-service is the only consumer that connects to both pools.
 2. **Generic telemetry hypertable, not per-equipment tables.** The Unicharm shape of `chiller_1_normalized`, `chiller_2_normalized`, … is the *anti-pattern* we are leaving behind. New equipment must never require DDL.
-3. **Relational dimension model for everything that isn't a measurement.** Equipment hierarchy, alerts, work orders, agent runs, audit — strict typed tables.
-4. **Quality is a column, never a side table.** Every reading carries its `QualityEnvelope`. No JOIN to find out if a value is trustworthy.
-5. **Multi-tenancy by row, not by schema.** A `tenant_id` column on every business table, enforced by Postgres Row-Level Security. New tenant = new row in `app.tenants`, never a new schema.
-6. **Time goes in TIMESTAMPTZ, always UTC.** Display timezone is a UI concern.
-7. **Migrations are versioned and reversible.** Alembic for the Python services that own DDL is a single source of truth; the Node services consume read-only Prisma clients generated from the live database.
-8. **Read paths use continuous aggregates, not raw rows.** UI dashboards never scan 1-min raw rows directly.
-9. **DB roles are real.** `omnyx_app` (read/write business), `omnyx_writer` (telemetry insert only), `omnyx_reader` (analytics read-only), `audit_writer` (audit insert only — no update/delete possible at the role level).
-10. **No mixed unit columns.** Every reading has explicit `unit`. We refuse to repeat the Unicharm trap where `wet_bulb_c` and `wet_bulb_temp` coexisted with ambiguous meaning.
+3. **Relational dimension model for everything that isn't a measurement.** Equipment hierarchy, alerts, work orders, agent runs, audit — strict typed tables on the primary `postgres` DB.
+4. **Source-of-truth in PostgreSQL, not MySQL.** The `source` schema mirrors what Unicharm IBMS provides (DDC registry, point catalog, historical readings, alarms, setpoints) — all in PostgreSQL. `dal-replay` reads from here, not from MySQL.
+5. **Quality is a column, never a side table.** Every reading carries its `QualityEnvelope`. No JOIN to find out if a value is trustworthy.
+6. **Multi-tenancy by row, not by schema.** A `tenant_id` column on every business table, enforced by Postgres Row-Level Security on the primary DB. New tenant = new row in `app.tenants`, never a new schema.
+7. **Time goes in TIMESTAMPTZ, always UTC.** Display timezone is a UI concern.
+8. **Migrations are versioned and reversible.** Two migration directories: `infra/postgres/migrations/` for the primary DB, `infra/timescaledb/migrations/` for the time-series DB.
+9. **Read paths use continuous aggregates, not raw rows.** UI dashboards query `telemetry.readings_1m/_5m/_1h/_1d` continuous aggregates on TimescaleDB.
+10. **No cross-database JOINs.** The api-service does two-step queries: resolve equipment → list of point_ids in `postgres`, then query telemetry in `timescaledb`. The boundary is enforced by separate connection pools.
+11. **DB roles are real.** `omnyx_writer` (INSERT/UPDATE), `omnyx_reader` (analytics read-only). Statement timeouts set per role.
+12. **No mixed unit columns.** Every reading has explicit `unit`. We refuse to repeat the Unicharm trap where `wet_bulb_c` and `wet_bulb_temp` coexisted with ambiguous meaning.
 
 ---
 
@@ -41,52 +43,53 @@ Outcome: one engine handles telemetry hypertable + relational + vector + audit. 
 ## 3 · Schemas
 
 ```
-omnyx (database)
-├── telemetry      ← hypertables (time-series)
-│   ├── readings                  every reading from every device
-│   ├── readings_1m  (cagg)       1-min continuous aggregate
-│   ├── readings_5m  (cagg)
-│   ├── readings_1h  (cagg)
-│   ├── quality_events            DQ events (FROZEN/SPIKE/DRIFT/…)
-│   ├── twin_states               twin predictions + uncertainty + RUL
-│   └── rl_actions                every RL action (shadow + live)
+postgres (primary)  —  pgvector/pgvector:pg16  —  port 5432
+├── source          ← Unicharm IBMS mirror (system of record)
+│   ├── ddc_registry         11 DDCs (master controller list)
+│   ├── point_catalog        363 BACnet points (gl_code, obj_type, unit, limits)
+│   ├── ibms_readings        Historical raw readings (partitioned monthly)
+│   ├── ibms_alarms          Original alarm records
+│   └── setpoints            Configured setpoints + history
 │
-├── app            ← relational business state
+├── app             ← OMNYX operational (multi-tenant via RLS)
 │   ├── tenants
-│   ├── organization → campus → building → floor → zone → area → site
-│   ├── equipment
-│   ├── device_points
-│   ├── data_quality_config
-│   ├── sensor_health_scores
-│   ├── baseline_profiles
-│   ├── cross_sensor_rules
-│   ├── gap_registry
-│   ├── rules                     alert rules
+│   ├── equipment            ← links to source.ddc_registry via source_ddc_id
+│   ├── device_points        ← links to source.point_catalog via source_gl_code
+│   ├── alert_rules
 │   ├── alerts
 │   ├── work_orders
-│   ├── parts                     parts catalog + WO line items
-│   ├── technicians               skills, certifications, current_load
-│   ├── twin_models               registry of installed twins
-│   ├── twin_calibrations         per-twin coefficients (Tier-2 fed)
-│   ├── rl_agents
-│   ├── rl_safety_bounds
-│   ├── agent_workflows
-│   ├── agent_runs
-│   ├── agent_tool_registry       tools available to agentic AI
-│   ├── approvals                 Tier-3+ pending + decisions
-│   ├── notifications             outbound mail/sms/push log
-│   ├── reports                   generated PDFs/HTMLs metadata
-│   ├── schedules                 PM + scheduled agent workflows
-│   ├── users
-│   ├── api_keys
-│   └── feature_flags
+│   ├── technicians + technician_skills
+│   ├── notifications
+│   ├── data_quality_config
+│   ├── twin_models
+│   ├── rl_agents + rl_episodes
+│   ├── agent_workflows + agent_runs
+│   ├── approval_requests
+│   └── knowledge_docs
 │
-├── audit          ← immutable, append-only, INSERT-only role
+├── audit           ← immutable append-only
 │   └── events
 │
-└── embeddings     ← pgvector
-    └── knowledge
+└── embeddings      ← pgvector (1536-dim, ivfflat cosine)
+    └── knowledge_chunks
+
+
+timescaledb         —  timescale/timescaledb:latest-pg16  —  port 5434
+└── telemetry       ← hypertables only
+    ├── readings              every reading from every device (1d chunks)
+    ├── readings_1m  (cagg)   1-min OHLC continuous aggregate
+    ├── readings_5m  (cagg)   5-min OHLC
+    ├── readings_1h  (cagg)   1-hour OHLC
+    ├── readings_1d  (cagg)   1-day OHLC
+    ├── twin_predictions      twin predictions + residuals + fault codes
+    └── rl_decisions          every RL action (shadow + live)
 ```
+
+**Compression / retention** (TimescaleDB only):
+- `readings`: compress after 7d, drop raw after 90d (aggregates survive)
+- `twin_predictions`: compress 7d, drop 180d
+- `rl_decisions`: compress 7d, drop 1y
+- `readings_1h` aggregate kept 1y, `readings_1d` aggregate kept 5y
 
 ---
 

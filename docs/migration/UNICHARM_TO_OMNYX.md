@@ -1,26 +1,35 @@
-# Migration — Unicharm MySQL → OMNYX TimescaleDB
+# Migration — Unicharm IBMS data → OMNYX 2-DB PostgreSQL
 
-How the existing THERMYNX deployment at Unicharm lands in the new OMNYX schema **without breaking the live HVAC product**.
+How the existing THERMYNX deployment at Unicharm lands in the new OMNYX schema **without breaking the live HVAC product** and **without MySQL in the OMNYX runtime**.
 
 ## 1 · Current state (verified)
 
 | Source | Shape | Volume |
 |---|---|---|
-| MySQL `unicharm` (Tailscale, port 3307) | Per-equipment `*_normalized` tables: `chiller_1_normalized`, `chiller_2_normalized`, `cooling_tower_1_normalized`, `cooling_tower_2_normalized`, `condenser_pump_0102_normalized`, `condenser_pump_03_normalized`, `primary_pump_{1,2,3}_normalized`, `plant_normalized` | ~131 tables, ~18.9 M rows total |
-| Raw vendor exports | `*_metric`, `*_om_p` (do not query, ETL'd upstream into `_normalized`) | Many |
-| Facility tables | `building`, `floor`, `zone`, `area`, `device`, `campus`, … | Few thousand rows |
+| Unicharm IBMS source data | Per-equipment `*_normalized` tables in legacy MySQL: `chiller_1_normalized`, `chiller_2_normalized`, `cooling_tower_*`, `condenser_pump_*`, `primary_pump_*`, `plant_normalized` | ~131 tables, ~18.9 M rows total |
+| Raw vendor exports | `*_metric`, `*_om_p` (ETL'd into `_normalized`) | Many |
+| Facility tables | `building`, `floor`, `zone`, `area`, `device`, `campus` | Few thousand rows |
 | THERMYNX app state | Postgres `thermynx_app` — `analysis_audit`, `anomalies`, `agent_runs`, `threads`, `messages`, `embeddings` | Small |
 
-Verified DDL in [DATABASE_SCHEMA_REFERENCE.md](../../../../HVAC%20AI%20Operations%20Intelligence%20Platform/docs/reference/DATABASE_SCHEMA_REFERENCE.md). Full DDL export at [unicharm_db_ddl.md](../../../../HVAC%20AI%20Operations%20Intelligence%20Platform/unicharm_db_ddl.md).
+## 2 · Target state in OMNYX (two PostgreSQL instances, no MySQL)
 
-## 2 · Target state in OMNYX
+The legacy MySQL data is modelled directly into the **primary `postgres` `source` schema** — one-time bulk import, no runtime MySQL dependency. See [`../poc/08a_DATABASE_DESIGN.md`](../poc/08a_DATABASE_DESIGN.md) and [`../poc/08_STORAGE_TIMESCALEDB.md`](../poc/08_STORAGE_TIMESCALEDB.md).
 
-One Postgres database with TimescaleDB. See [`../poc/08_STORAGE_TIMESCALEDB.md`](../poc/08_STORAGE_TIMESCALEDB.md):
+**Primary DB (`postgres`, port 5432):**
+- `source.ddc_registry` — DDC controllers (from facility tables)
+- `source.point_catalog` — BACnet point catalog (from `device` + normalized tables)
+- `source.ibms_readings` — historical raw readings (partitioned by month) — replaces every `*_normalized` table
+- `source.ibms_alarms`, `source.setpoints` — alarm + setpoint history
+- `app.equipment`, `app.device_points` — operational catalog linked via `source_ddc_id` / `source_gl_code` FKs
+- `app.alerts`, `app.work_orders`, `app.agent_runs` — replace `thermynx_app` equivalents
+- `embeddings.knowledge_chunks` — pgvector, replaces `thermynx_app.embeddings`
 
-- `telemetry.readings` (hypertable) — replaces every `*_normalized` table.
-- `app.equipment`, `app.device_points` — dimension model with `legacy_table` / `legacy_column` back-pointers.
-- `app.alerts`, `app.work_orders`, `app.agent_runs` — replace `thermynx_app` equivalents.
-- `embeddings.knowledge` — pgvector, replaces `thermynx_app.embeddings`.
+**Time-series DB (`timescaledb`, port 5434):**
+- `telemetry.readings` (hypertable) — live + recent readings, compressed after 7d, dropped after 90d
+- `telemetry.readings_1m/_5m/_1h/_1d` — continuous aggregates (kept longer than raw)
+- `telemetry.twin_predictions`, `telemetry.rl_decisions`
+
+**Note:** The legacy MySQL is read once with a Python ETL job, transformed into `source.ibms_readings`, then disconnected. The OMNYX runtime never opens a MySQL connection.
 
 ## 3 · Migration phases
 

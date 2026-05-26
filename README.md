@@ -10,7 +10,9 @@
 | Footer signature | `OMNYX · by Graylinx` |
 | HVAC vertical (already shipping) | **THERMYNX** — see [`extensions/thermynx-hvac/`](./extensions/thermynx-hvac/) |
 
-OMNYX delivers the v1.1 product described in [`docs/source/prd/CloudOps_Core_PRD_v1_0.docx`](./docs/source/prd/CloudOps_Core_PRD_v1_0.docx): eight domain-agnostic modules, Digital Twin FDD, Reinforcement Learning optimisation, and an Agentic AI framework (Planner / Executor / Validator) on top of a Kafka + PostgreSQL/TimescaleDB on-prem core.
+OMNYX delivers the v1.1 product described in [`docs/source/prd/CloudOps_Core_PRD_v1_0.docx`](./docs/source/prd/CloudOps_Core_PRD_v1_0.docx): eight domain-agnostic modules, Digital Twin FDD, Reinforcement Learning optimisation, and an Agentic AI framework (Planner / Executor / Validator) on top of a Kafka + **dual-database PostgreSQL** on-prem core (pure PG16 for source/app data + TimescaleDB for time-series telemetry).
+
+**For service URLs, credentials, and how to use each component**, see [`SERVICES.md`](./SERVICES.md).
 
 ---
 
@@ -32,10 +34,10 @@ omnyx/
 │   └── brand/               ← palette / typography assets copied from THERMYNX kit
 ├── services/
 │   ├── dal-bacnet/          ← Edge: BACnet reader + DQ Tier 1 + Kafka producer
-│   ├── dal-replay/          ← One-shot: replays Unicharm MySQL into Kafka
-│   ├── api-service/         ← Fastify REST + WebSocket + agent tool gateway
+│   ├── dal-replay/          ← One-shot: replays source.ibms_readings into Kafka
+│   ├── api-service/         ← Fastify REST + dual DB pool (postgres + timescaledb)
 │   ├── ws-bridge/           ← Kafka → WebSocket plant snapshot
-│   ├── db-writer/           ← Kafka → TimescaleDB
+│   ├── db-writer/           ← Kafka → TimescaleDB (telemetry only)
 │   ├── dq-etl/              ← Tier 2 scheduled jobs (Python + APScheduler)
 │   ├── twin-broker/         ← Digital Twin FDD + RUL engine
 │   ├── rl-broker/           ← RL agent registry, shadow/live modes
@@ -45,12 +47,13 @@ omnyx/
 │   └── thermynx-hvac/       ← HVAC vertical (Unicharm deployment lives here)
 ├── shared/                  ← Canonical models (Python + TS), Kafka schemas
 ├── infra/
-│   ├── compose/             ← docker-compose.yml for the on-prem POC
-│   ├── kafka/               ← Topic creation init job
-│   ├── postgres/migrations/ ← Schema migrations (TimescaleDB + relational)
-│   ├── keycloak/            ← Realm export + agent authorization model
-│   ├── prometheus/          ← Scrape configs
-│   └── grafana/             ← Dashboards (DQ, Kafka, latency, twin/RL/agents)
+│   ├── compose/                  ← docker-compose.yml for the on-prem POC
+│   ├── kafka/                    ← Topic creation init job
+│   ├── postgres/migrations/      ← Primary App DB — source.*, app.*, audit.*, embeddings.*
+│   ├── timescaledb/migrations/   ← Telemetry DB — hypertables, continuous aggregates, compression
+│   ├── keycloak/                 ← Realm export + agent authorization model
+│   ├── prometheus/               ← Scrape configs + Alloy log pipeline
+│   └── grafana/                  ← Dashboards (DQ, Kafka, latency, twin/RL/agents)
 └── scripts/                 ← bring-up, fault-injection, smoke tests, demo script
 ```
 
@@ -68,8 +71,8 @@ omnyx/
 
 | Source | Role in OMNYX |
 |---|---|
-| [`D:\Harshan\simulations\gl_pbs`](../../simulations/gl_pbs/) | Field data source for the POC (BACnet simulator, 11 DDCs, 363 points). Reused as-is. |
-| [`D:\Harshan\HVAC AI Operations Intelligence Platform`](../../HVAC%20AI%20Operations%20Intelligence%20Platform/) | The current THERMYNX deployment at Unicharm. Becomes the first vertical extension; its MySQL `unicharm` history is replayed into the new TimescaleDB hypertable via `services/dal-replay`. |
+| [`simulations/gl_pbs`](./simulations/gl_pbs/) | Field data source for the POC (BACnet simulator, 11 DDCs, 363 points). Reused as-is. |
+| Unicharm IBMS historical data | Modelled in `source` schema on the primary PostgreSQL (no separate MySQL). `services/dal-replay` reads `source.ibms_readings` and publishes to Kafka. |
 | [`docs/source/`](./docs/source/) | Original PRD documents, master PDF, and supporting references. Kept as the authoritative source-of-truth for product requirements. |
 
 ---

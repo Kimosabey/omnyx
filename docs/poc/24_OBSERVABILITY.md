@@ -7,7 +7,7 @@ Prometheus + Loki + Grafana stack, already in compose. This doc fixes the **metr
 | Signal | Tool | Where |
 |---|---|---|
 | Metrics | Prometheus + service-side `prom-client` / `prometheus_client` | scraped on each service's `/metrics` |
-| Logs | Pino (Node) / structlog (Python) → stdout → Promtail → Loki | structured JSON |
+| Logs | Pino (Node) / structlog (Python) → stdout → Grafana Alloy → Loki | structured JSON; Alloy replaces EOL Promtail (Apache 2.0) |
 | Traces | OpenTelemetry — kept as a v2 add; POC carries `request_id` end-to-end | `request_id` header propagation only |
 
 ## 2 · Common labels every metric must carry

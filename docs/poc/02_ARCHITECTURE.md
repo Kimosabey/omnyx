@@ -39,12 +39,12 @@
 └────┬──────────────┬──────────────┬──────────────┬──────────────┬─────────┘
      │              │              │              │              │
      ▼              ▼              ▼              ▼              ▼
-┌─────────┐  ┌────────────┐  ┌──────────┐  ┌──────────┐  ┌───────────────┐
-│db-writer│  │ws-bridge   │  │twin-     │  │rl-broker │  │agentic-ai     │
-│         │  │            │  │broker    │  │          │  │orchestrator   │
-│Postgres │  │WebSocket   │  │FDD +RUL  │  │shadow+   │  │Planner/Exec/  │
-│+Timesc. │  │snapshot    │  │drift mon │  │live mode │  │Validator      │
-└─────────┘  └──────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬────────┘
+┌──────────┐ ┌────────────┐  ┌──────────┐  ┌──────────┐  ┌───────────────┐
+│db-writer │ │ws-bridge   │  │twin-     │  │rl-broker │  │agentic-ai     │
+│          │ │            │  │broker    │  │          │  │orchestrator   │
+│Timescale-│ │WebSocket   │  │FDD +RUL  │  │shadow+   │  │Planner/Exec/  │
+│DB only   │ │snapshot    │  │drift mon │  │live mode │  │Validator      │
+└──────────┘ └──────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬────────┘
                     │             │             │               │
                     └─────────────┴──────┬──────┴───────────────┘
                                          ▼
@@ -52,6 +52,9 @@
 │                       APPLICATION BACKEND                                │
 │   api-service  (Node.js / Fastify, TypeScript)                           │
 │     ├─ REST: assets, telemetry, alerts, work_orders, dq, twin, rl, agents│
+│     ├─ DUAL DB POOL:                                                     │
+│     │     • postgres    — source.* + app.* (RLS, OLTP)                   │
+│     │     • timescaledb — telemetry.* (read-only for charts/reports)     │
 │     ├─ Rules engine (threshold, offline, anomaly, hold-time)             │
 │     ├─ Scheduler (BullMQ on Redis) — PM tasks, scheduled agent workflows │
 │     ├─ Agent tool gateway (every tool the agents can call lands here)    │
@@ -72,7 +75,7 @@
 
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                       CROSS-CUTTING                                      │
-│   Keycloak  ·  Prometheus + Grafana  ·  Kafka UI  ·  Loki/Promtail logs  │
+│   Keycloak  ·  Prometheus + Grafana  ·  Kafka UI  ·  Loki + Alloy logs   │
 └──────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -101,25 +104,28 @@
 
 | # | Service | Image / build | Ports (host) | Role |
 |---|---|---|---|---|
-| 1 | `kafka` | `confluentinc/cp-kafka:7.6.1` | 9092 | KRaft single-broker |
+| 1 | `kafka` | `apache/kafka:3.7.0` | 9092 / 9095 | KRaft single-broker, dual listeners |
 | 2 | `kafka-ui` | `provectuslabs/kafka-ui:latest` | 8080 | Topic & lag UI |
-| 3 | `postgres` | `timescale/timescaledb:2.14-pg16` | 5432 | Telemetry + relational |
-| 4 | `redis` | `redis:7-alpine` | 6379 | BullMQ + caching |
-| 5 | `keycloak` | `quay.io/keycloak/keycloak:24.0` | 8081 | SSO/RBAC |
-| 6 | `prometheus` | `prom/prometheus:v2.51` | 9090 | Metrics |
-| 7 | `grafana` | `grafana/grafana:10.4` | 3000 | Dashboards |
-| 8 | `loki` | `grafana/loki:2.9` | 3100 | Logs |
-| 9 | `bacnet-sim` | build from gl_pbs | 2001–2011 / 7091–7101 | 11 simulated DDCs |
-| 10 | `dal-bacnet` | build (host-net) | — | Edge reader + Tier 1 DQ + Kafka producer |
-| 11 | `dq-etl` | build (Python) | — | Tier 2 jobs |
-| 12 | `db-writer` | build (Node) | — | Kafka → Postgres |
-| 13 | `ws-bridge` | build (Node) | 8765 | WebSocket snapshot |
-| 14 | `twin-broker` | build (Python) | — | Twin FDD + RUL |
-| 15 | `rl-broker` | build (Python) | — | RL agents (shadow/live) |
-| 16 | `agentic-ai` | build (Node) | — | Planner/Executor/Validator |
-| 17 | `api-service` | build (Node) | 8000 | REST + tool gateway |
-| 18 | `frontend` | build (nginx static) | 80 | React SPA |
+| 3 | `postgres` | `pgvector/pgvector:pg16` | 5432 | **Primary DB** — source + app + audit + embeddings |
+| 4 | `timescaledb` | `timescale/timescaledb:latest-pg16` | 5434 | **Time-series DB** — telemetry only |
+| 5 | `redis` | `redis:7-alpine` | 6379 | BullMQ + caching |
+| 6 | `keycloak` | `quay.io/keycloak/keycloak:24.0` | 8282 | SSO/RBAC |
+| 7 | `prometheus` | `prom/prometheus:v2.51` | 9091 | Metrics |
+| 8 | `grafana` | `grafana/grafana:10.4` | 4000 | Dashboards |
+| 9 | `loki` | `grafana/loki:2.9.8` | 3101 | Logs |
+| 10 | `alloy` | `grafana/alloy:latest` | 12345 | Log pipeline (replaces EOL Promtail) |
+| 11 | `bacnet-sim` | build from gl_pbs | 2001–2011 / 7091–7101 | 11 simulated DDCs |
+| 12 | `dal-bacnet` | build (host-net) | — | Edge reader + Tier 1 DQ + Kafka producer |
+| 13 | `dal-replay` | build (Python) | — | Replays `source.ibms_readings` → Kafka |
+| 14 | `dq-etl` | build (Python) | — | Tier 2 async jobs (Gate 3) |
+| 15 | `db-writer` | build (Python) | — | Kafka → TimescaleDB (telemetry only) |
+| 16 | `ws-bridge` | build (Node) | 8765 | Kafka → WebSocket snapshot |
+| 17 | `twin-broker` | build (Python) | — | Twin FDD + RUL (Gate 3) |
+| 18 | `rl-broker` | build (Python) | — | RL agents (Gate 3) |
+| 19 | `agentic-ai` | build (Node) | — | Planner/Executor/Validator (Gate 3) |
+| 20 | `api-service` | build (Node) | 8000 | REST + tool gateway + dual DB pool |
+| 21 | `frontend` | build (nginx static) | 80 | React SPA |
 
-That's 18 containers; the host doesn't break a sweat (proven at 1 % Kafka CPU on the dev laptop).
+Two PostgreSQL services keep storage cleanly partitioned: relational/OLTP workloads on pure PG16 (with pgvector); high-volume time-series on TimescaleDB (hypertables + continuous aggregates + compression). The api-service is the only consumer that touches both DBs.
 
-See [15_DEPLOYMENT_ONPREMISE.md](15_DEPLOYMENT_ONPREMISE.md) for the exact compose file.
+See [15_DEPLOYMENT_ONPREMISE.md](15_DEPLOYMENT_ONPREMISE.md) for the compose file, and [`../../SERVICES.md`](../../SERVICES.md) for URLs and credentials.

@@ -6,7 +6,9 @@ Every component runs locally. No cloud service is required to bring the POC up e
 
 | Concern | Choice | Note |
 |---|---|---|
-| **Primary database** | **PostgreSQL 16 + TimescaleDB 2.14 + pgvector 0.6** | **One database. No MySQL anywhere in OMNYX runtime.** |
+| **Primary DB** | **PostgreSQL 16 + pgvector** (`pgvector/pgvector:pg16`) | Pure PG16 — source.*, app.*, audit.*, embeddings.* |
+| **Time-series DB** | **TimescaleDB on PG16** (`timescale/timescaledb:latest-pg16`) | telemetry.* — hypertables + continuous aggregates + compression |
+| **Databases — strategy** | **Two PostgreSQL instances, no MySQL.** | Clean separation: OLTP/source vs high-volume time-series |
 | Message bus | Kafka 7.6 (KRaft) | |
 | Cache + queue | Redis 7 | |
 | Backend | Node.js 20 + Fastify 4 + TypeScript 5 | |
@@ -17,7 +19,7 @@ Every component runs locally. No cloud service is required to bring the POC up e
 | Containers | Docker 24 + Compose v2 (POC) / k8s (prod) | |
 | Monitoring | Prometheus + Grafana + Loki | |
 
-**Unicharm MySQL is a reference system, not part of OMNYX.** We *read* it once during cut-over to bulk-load history into Postgres (one-shot `dal-replay` job, see [`../migration/UNICHARM_TO_OMNYX.md`](../migration/UNICHARM_TO_OMNYX.md)). After M3 cutover it goes read-only for 90 days then is decommissioned. The OMNYX runtime has zero MySQL dependencies.
+**No MySQL anywhere in OMNYX.** Unicharm IBMS data is modelled directly in the primary PostgreSQL's `source` schema (DDC registry, point catalog, historical readings, alarms, setpoints). `dal-replay` reads from `source.ibms_readings` and publishes to Kafka — no MySQL connection ever made. The OMNYX runtime has zero MySQL dependencies.
 
 Detailed DB design is in [`08_STORAGE_TIMESCALEDB.md`](08_STORAGE_TIMESCALEDB.md) and the ERD/principles document [`08a_DATABASE_DESIGN.md`](08a_DATABASE_DESIGN.md).
 
@@ -37,15 +39,16 @@ Detailed DB design is in [`08_STORAGE_TIMESCALEDB.md`](08_STORAGE_TIMESCALEDB.md
 
 | Service | Image / Library | Version | Role |
 |---|---|---|---|
-| Kafka | `confluentinc/cp-kafka` | 7.6.1 (KRaft) | Event spine — exact image already proven in gl_pbs stress tests |
+| Kafka | `apache/kafka` | 3.7.0 (KRaft) | Event spine — dual listeners (internal + host-net) |
 | Kafka UI | `provectuslabs/kafka-ui` | latest | Topic + consumer-lag visibility |
-| PostgreSQL + TimescaleDB | `timescale/timescaledb` | 2.14 / PG 16 | Single relational + time-series store (replaces the dual MySQL + Postgres of the HVAC platform) |
-| pgvector | `timescale/timescaledb-ha` includes ext | 0.6 | Embeddings for Agentic AI memory (no separate vector DB) |
+| **Primary DB** | `pgvector/pgvector:pg16` | PG 16 + pgvector | source + app + audit + embeddings |
+| **Time-series DB** | `timescale/timescaledb:latest-pg16` | PG 16 + TimescaleDB | telemetry only (hypertables, compression, retention) |
 | Redis | `redis:7-alpine` | 7.2 | BullMQ queues, cache |
 | Keycloak | `quay.io/keycloak/keycloak` | 24.0 | SSO, RBAC, agent authorization |
 | Prometheus | `prom/prometheus` | 2.51 | Metrics |
 | Grafana | `grafana/grafana` | 10.4 | Dashboards |
-| Loki + Promtail | `grafana/loki`, `promtail` | 2.9 | Logs |
+| Loki | `grafana/loki` | 2.9.8 | Logs |
+| Grafana Alloy | `grafana/alloy` | latest | Log pipeline (replaces EOL Promtail) |
 
 ## 3 · Backend (api-service)
 

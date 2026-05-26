@@ -34,9 +34,12 @@ Conventions
    │               │              │              │              │
    │ ───>          │              │              │              │
    ▼               │              ▼              ▼              │
-④ Postgres      ⑤ keep state    twin step     observation     planner gets
+④ TimescaleDB   ⑤ keep state    twin step     observation     planner gets
    telemetry.   for snapshot    + FDD         update            triggered only
    readings     every 5 s       + RUL                            on alerts
+   (hypertable,
+    compressed
+    after 7d)
                    │
                    │ <<-->> WebSocket
                    ▼

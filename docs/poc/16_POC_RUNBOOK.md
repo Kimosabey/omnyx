@@ -26,7 +26,7 @@ pip install -r scripts/requirements.txt
 
 ```bash
 cd infra/compose
-docker compose up -d kafka kafka-init kafka-ui postgres redis keycloak prometheus grafana loki promtail
+docker compose up -d kafka kafka-init kafka-ui postgres timescaledb redis keycloak prometheus grafana loki alloy
 
 # Wait for healthchecks
 docker compose ps
@@ -34,9 +34,11 @@ docker compose ps
 
 Verify:
 - Kafka UI on http://localhost:8080
-- Keycloak admin on http://localhost:8081 (admin / $KEYCLOAK_ADMIN_PASSWORD)
-- Postgres `omnyx` database exists; `\dn` shows schemas `app`, `telemetry`, `audit`, `embeddings`
-- Grafana on http://localhost:3000 (admin / admin)
+- Keycloak admin on http://localhost:8282/admin (admin / $KEYCLOAK_ADMIN_PASSWORD)
+- **Primary DB** (port 5432) — schemas `source`, `app`, `audit`, `embeddings` populated; 11 DDCs + 363 points in `source.*`
+- **TimescaleDB** (port 5434) — schema `telemetry` with 3 hypertables and 4 continuous aggregates
+- Grafana on http://localhost:4000 (admin / omnyx2024)
+- See full URL/credential list in `omnyx/SERVICES.md`
 
 ## 2 · Seed the database (~30 s)
 

@@ -126,7 +126,7 @@ See [14_AUTH_KEYCLOAK.md](14_AUTH_KEYCLOAK.md).
 
 ## 7 · Observability
 
-- `pino` JSON logs → Loki via Promtail.
+- `pino` JSON logs → Loki via Grafana Alloy (replaces EOL Promtail).
 - `prom-client` metrics — `http_request_duration_seconds`, `kafka_consume_lag`, `rule_eval_total`, `agent_tool_call_total{tool,tier}`.
 - `request-id` propagated through every layer for trace.
 - Health endpoint `/healthz` reports: Postgres, Kafka, Redis, Keycloak, twin-broker, rl-broker, agentic-ai, llm backend.

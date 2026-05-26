@@ -141,7 +141,7 @@ Justifies "Recommended" so procurement understands what each line buys.
 | agentic-ai (Node) | 250 MB | SDK + token state |
 | dal-bacnet (Python) | 200 MB | bacpypes + DQ Tier 1 |
 | dq-etl (idle) | 150 MB → 1.5 GB during nightly | jobs use pandas/numpy briefly |
-| Prometheus + Grafana + Loki + Promtail | 1 GB | scrapes + dashboards + log ingest |
+| Prometheus + Grafana + Loki + Alloy | 1 GB | scrapes + dashboards + log ingest |
 | OS + Docker daemon | 1.5–2 GB | Linux kernel + container runtime |
 | **STEADY TOTAL** | **~9 GB** | — |
 | ETL / continuous-aggregate burst | + 4–6 GB | hourly / daily peaks |

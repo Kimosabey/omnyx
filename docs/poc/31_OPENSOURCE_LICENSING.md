@@ -17,7 +17,7 @@
 | Prometheus | 2.51 | Apache 2.0 | ✅ | ✅ |
 | Grafana | 10.4 OSS edition | AGPL-3.0 | ✅ | ✅ |
 | Loki | 2.9 | AGPL-3.0 | ✅ | ✅ |
-| Promtail | 2.9 | Apache 2.0 | ✅ | ✅ |
+| Grafana Alloy | latest | Apache 2.0 | ✅ | ✅ | replaces EOL Promtail (March 2026) |
 | MinIO | RELEASE.2024-* | AGPL-3.0 (community) | ✅ | ✅ |
 | Kafka UI (provectus) | latest | Apache 2.0 | ✅ | ✅ |
 | Docker / Docker Compose | 24 / v2 | Apache 2.0 | ✅ | ✅ |

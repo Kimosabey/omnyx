@@ -1,15 +1,28 @@
-# 08 · Storage — PostgreSQL 16 + TimescaleDB
+# 08 · Storage — Two-Database PostgreSQL Architecture
 
-One database holds everything OMNYX needs. The legacy split (Unicharm MySQL telemetry + Postgres `thermynx_app` state) collapses into a single Postgres instance with two schemas — `telemetry.*` (hypertables) and `app.*` (relational). One backup, one HA plan, one connection string per service.
+OMNYX uses **two PostgreSQL instances** (no MySQL anywhere):
+
+- **`postgres`** (pgvector/pgvector:pg16, port 5432) — primary OLTP DB, holds `source` + `app` + `audit` + `embeddings`
+- **`timescaledb`** (timescale/timescaledb:latest-pg16, port 5434) — pure time-series, holds `telemetry` only
+
+The api-service is the only consumer that connects to both; all other services touch exactly one of them. Two pools, two backup policies, independent scaling.
 
 ## 1 · Database layout
 
+### Primary DB (`postgres`)
+
 | Schema | Purpose | Engine feature |
 |---|---|---|
-| `telemetry` | Time-series of every reading, every DQ event, every twin output, every RL action | TimescaleDB hypertables, native compression after 7 days |
-| `app` | Equipment registry, alerts, work orders, users, agent runs, DQ config | Plain Postgres tables |
-| `embeddings` | Agent / RAG vectors | pgvector |
-| `audit` | Immutable audit log (agent decisions, write-backs, approvals) | Append-only, rotated to cold storage monthly |
+| `source` | Unicharm IBMS mirror — DDC registry, point catalog, historical readings/alarms, setpoints | Native partitioning on `ibms_readings` by month |
+| `app` | Equipment, alerts, work orders, agent runs, approvals, DQ config | RLS per tenant + JSONB GIN + partial indexes |
+| `audit` | Immutable append-only event log | INSERT-only role |
+| `embeddings` | RAG vectors (1536-dim) | pgvector ivfflat (cosine) |
+
+### Time-series DB (`timescaledb`)
+
+| Schema | Purpose | Engine feature |
+|---|---|---|
+| `telemetry` | All readings, DQ outputs, twin predictions, RL actions | Hypertables + continuous aggregates (1m/5m/1h/1d) + auto-compression after 7d + auto-retention |
 
 ## 2 · Core hypertable — `telemetry.readings`
 
