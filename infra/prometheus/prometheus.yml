@@ -1,23 +1,62 @@
 global:
   scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    stack: omnyx
 
 scrape_configs:
+
+  # OMNYX application services
   - job_name: api-service
     static_configs:
       - targets: ["api-service:8000"]
+        labels: { service: api-service }
+    metrics_path: /metrics
 
   - job_name: ws-bridge
     static_configs:
       - targets: ["ws-bridge:8765"]
+        labels: { service: ws-bridge }
+    metrics_path: /metrics
 
   - job_name: twin-broker
     static_configs:
-      - targets: ["twin-broker:8000"]
+      - targets: ["twin-broker:8013"]
+        labels: { service: twin-broker }
+    metrics_path: /metrics
 
   - job_name: rl-broker
     static_configs:
-      - targets: ["rl-broker:8000"]
+      - targets: ["rl-broker:8014"]
+        labels: { service: rl-broker }
+    metrics_path: /metrics
 
   - job_name: agentic-ai
     static_configs:
-      - targets: ["agentic-ai:8000"]
+      - targets: ["agentic-ai:8015"]
+        labels: { service: agentic-ai }
+    metrics_path: /metrics
+
+  - job_name: db-writer
+    static_configs:
+      - targets: ["db-writer:8011"]
+        labels: { service: db-writer }
+    metrics_path: /metrics
+
+  - job_name: dq-etl
+    static_configs:
+      - targets: ["dq-etl:8012"]
+        labels: { service: dq-etl }
+    metrics_path: /metrics
+
+  # dal-bacnet runs on host network; Prometheus reaches it via host.docker.internal
+  - job_name: dal-bacnet
+    static_configs:
+      - targets: ["host.docker.internal:8010"]
+        labels: { service: dal-bacnet }
+    metrics_path: /metrics
+
+  # Prometheus self-scrape
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

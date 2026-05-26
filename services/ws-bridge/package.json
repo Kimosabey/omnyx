@@ -1,0 +1,24 @@
+{
+  "name": "omnyx-ws-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "jwks-rsa": "^3.1.0",
+    "kafkajs": "^2.2.4",
+    "prom-client": "^15.1.2",
+    "ws": "^8.16.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.11.20",
+    "@types/ws": "^8.5.10",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2"
+  }
+}

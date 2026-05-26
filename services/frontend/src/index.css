@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design token CSS variables ───────────────────────────────────────────── */
+
+/* Dark theme (default) — Graylinx dark canvas */
+:root,
+.dark {
+  --color-canvas:       10 14 31;
+  --color-card:         19 25 51;
+  --color-elevated:     27 34 73;
+  --color-sidebar:      6 9 26;
+  --color-border:       30 42 74;
+  --color-brand:        31 63 254;
+  --color-brand-hover:  61 86 254;
+  --color-brand-subtle: 31 63 254;
+  --color-tx-primary:   241 245 255;
+  --color-tx-secondary: 136 146 176;
+  --color-tx-muted:     74 85 120;
+  --color-tx-inverse:   10 14 31;
+  --color-status-good:  52 211 153;
+  --color-status-warn:  251 191 36;
+  --color-status-bad:   248 113 113;
+  --color-status-info:  96 165 250;
+
+  color-scheme: dark;
+}
+
+/* Light theme — high contrast, WCAG 2.2 AA compliant */
+.light {
+  --color-canvas:       248 249 252;
+  --color-card:         255 255 255;
+  --color-elevated:     241 244 251;
+  --color-sidebar:      31 63 254;
+  --color-border:       218 225 240;
+  --color-brand:        31 63 254;
+  --color-brand-hover:  24 53 224;
+  --color-brand-subtle: 31 63 254;
+  --color-tx-primary:   10 14 31;
+  --color-tx-secondary: 51 65 85;
+  --color-tx-muted:     100 116 139;
+  --color-tx-inverse:   255 255 255;
+  --color-status-good:  5 150 105;
+  --color-status-warn:  180 83 9;
+  --color-status-bad:   185 28 28;
+  --color-status-info:  37 99 235;
+
+  color-scheme: light;
+}
+
+/* ── Base resets ──────────────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-canvas text-tx-primary font-body;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* WCAG 2.2 — visible focus indicators for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-brand));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Never suppress focus for mouse users without providing an alternative */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--color-brand) / 0.4);
+  }
+
+  /* WCAG 2.2: 2.5.8 — Minimum touch target size */
+  button,
+  a,
+  [role="button"],
+  [role="link"],
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 24px;
+    min-width: 24px;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgb(var(--color-brand) / 0.3);
+    color: rgb(var(--color-tx-primary));
+  }
+}
+
+/* ── Utility classes ──────────────────────────────────────────────────────── */
+
+@layer utilities {
+  .glass {
+    background: rgb(var(--color-card) / 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-dark {
+    background: rgb(var(--color-canvas) / 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Shimmer skeleton animation */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgb(var(--color-card)) 0%,
+      rgb(var(--color-elevated)) 50%,
+      rgb(var(--color-card)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Brand glow effect */
+  .brand-glow {
+    box-shadow: 0 0 20px rgb(var(--color-brand) / 0.3),
+                0 0 40px rgb(var(--color-brand) / 0.1);
+  }
+
+  /* Live pulse dot */
+  .live-dot::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgb(var(--color-status-good));
+    box-shadow: 0 0 0 0 rgb(var(--color-status-good) / 0.4);
+    animation: livePulse 2s infinite;
+    margin-right: 6px;
+  }
+
+  @keyframes livePulse {
+    0%   { box-shadow: 0 0 0 0 rgb(var(--color-status-good) / 0.4); }
+    70%  { box-shadow: 0 0 0 8px rgb(var(--color-status-good) / 0); }
+    100% { box-shadow: 0 0 0 0 rgb(var(--color-status-good) / 0); }
+  }
+
+  /* Noise texture overlay */
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Truncate with tooltip support */
+  .truncate-smart {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
