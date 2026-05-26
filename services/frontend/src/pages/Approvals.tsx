@@ -3,7 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckSquare, Check, X, Clock, Shield } from "lucide-react";
 import PageTransition from "@/components/layout/PageTransition";
-import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { SkeletonRow } from "@/components/ui/SkeletonLoader";

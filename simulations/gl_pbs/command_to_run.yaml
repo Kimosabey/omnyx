@@ -1,0 +1,37 @@
+@echo off
+cd e:/gl_pbs
+
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2001 7001 192.168.1.6 siteEqpIOSummary_DDC01.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2002 7002 192.168.1.6 siteEqpIOSummary_DDC01_01.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2003 7003 192.168.1.6 siteEqpIOSummary_DDC01_02.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2004 7004 192.168.1.6 siteEqpIOSummary_DDC02.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2005 7005 192.168.1.6 siteEqpIOSummary_DDC02_01.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2006 7006 192.168.1.6 siteEqpIOSummary_DDC02_02.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2007 7007 192.168.1.6 siteEqpIOSummary_DDC03.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2008 7008 192.168.1.6 siteEqpIOSummary_DDC04.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2009 7009 192.168.1.6 siteEqpIOSummary_DDC04_01.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2010 7010 192.168.1.6 siteEqpIOSummary_DDC05.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2011 7011 192.168.1.6 siteEqpIOSummary_DDC05_01.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2012 7012 192.168.1.6 siteEqpIOSummary_DDC05_02.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2013 7013 192.168.1.6 siteEqpIOSummary_DDC06.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2014 7014 192.168.1.6 siteEqpIOSummary_DDC07.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2015 7015 192.168.1.6 siteEqpIOSummary_DDC08.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2016 7016 192.168.1.6 siteEqpIOSummary_DDC09.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2017 7017 192.168.1.6 siteEqpIOSummary_DDC10.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2018 7018 192.168.1.6 siteEqpIOSummary_DDC11.csv
+python bacnet_simulator.py CBDeploymentDetails_Site.json 2019 7019 192.168.1.6 siteEqpIOSummary_DDC12.csv
+
+
+
+
+ 
+curl --header "Content-Type: application/json" -d "{\"id\":\"9ada01f6-de88-4fdf-84ed-e633e064994f\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785f432d-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785f5fe6-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785f7725-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785f9039-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785fb007-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785fc8b4-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"785fe24e-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"78600f70-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice
+curl --header "Content-Type: application/json" -d "{\"id\":\"7860270d-00ed-11f1-8429-842afdd05b3a\"}" -k https://localhost:443/v1/devices/registerBacnetDevice

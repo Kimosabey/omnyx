@@ -128,7 +128,7 @@ export default function AgentActivity() {
           { label: "Completed", count: completedCount, status: "good"  as const },
           { label: "Running",   count: runningCount,   status: "info"  as const },
           { label: "Failed",    count: failedCount,    status: "bad"   as const },
-        ].map(({ label, count, status }) => (
+        ].map(({ label, count }) => (
           <Card key={label} padding="sm" className="text-center">
             <p className="font-mono text-2xl font-bold text-tx-primary">{count}</p>
             <p className="font-body text-xs text-tx-muted mt-0.5">{label}</p>

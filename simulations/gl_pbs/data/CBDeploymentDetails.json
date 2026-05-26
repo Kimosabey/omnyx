@@ -1,0 +1,24 @@
+{
+	"Equipment_Specs": {
+		"Start_Equipment_IDs": {
+			"AHU": 11,
+			"VAV": 21,
+			"CHILLER": 31,
+			"COOLING_TOWER": 41,
+			"CT_FAN": 51,
+			"CT_VARIABLE_FAN":61,
+			"PUMP": 71,
+			"SECONDARY_PUMP": 81,
+			"CONDENSER_PUMP": 91,
+			"PRIMARY_VARIABLE":101,
+			"AIR_COOLED_CHILLER":111,
+			"CPM":121,
+			"DPT_DEVICE":131,
+			"COMMON_HEADER":141,
+			"WATER_COOLED_HEADER":151,
+			"AIR_COOLED_HEADER":161,
+			"CSU":171,
+			"CONDENSER_VARIABLE":181
+		}
+	}
+}

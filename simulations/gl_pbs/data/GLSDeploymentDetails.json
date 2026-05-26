@@ -1,0 +1,166 @@
+{
+  "Equipment_Specs": {
+    "Disable_Random_PresentValue_Updates": false,
+    "Start_Param_IDs": {
+      "AHU": 10001,
+      "VAV": 11001,
+      "CPM": 12001,
+      "COMMON_HEADER": 13001,
+      "WATER_COOLED_HEADER": 14001,
+      "AIR_COOLED_HEADER": 15001,
+      "CHILLER": 16001,
+      "AIR_COOLED_CHILLER": 18001,
+      "CONDENSER_PUMP": 19001,
+      "PRIMARY_VARIABLE": 20001,
+      "CT_VARIABLE_FAN": 21001,
+      "DPT_DEVICE": 22001,
+      "COOLING_TOWER": 23001,
+      "CT_FAN": 24001,
+      "PUMP": 26001,
+      "SECONDARY_PUMP": 28001,
+      "CSU": 29001,
+      "EM": 31001,
+      "BTU_METER": 32001,
+      "FLOW_METER": 33001,
+      "EXPANSION_TANK": 34001,
+      "ATCS": 35001,
+      "MAKEUP_TANK": 36001,
+      "HARMONIC_FILTER": 37001
+    },
+    "Start_TrendLog_IDs": {
+      "AHU": 10001,
+      "VAV": 11001,
+      "CPM": 12001,
+      "COMMON_HEADER": 13001,
+      "WATER_COOLED_HEADER": 14001,
+      "AIR_COOLED_HEADER": 15001,
+      "CHILLER": 16001,
+      "AIR_COOLED_CHILLER": 18501,
+      "CONDENSER_PUMP": 19001,
+      "PRIMARY_VARIABLE": 20001,
+      "CT_VARIABLE_FAN": 21001,
+      "DPT_DEVICE": 22001,
+      "COOLING_TOWER": 23001,
+      "CT_FAN": 24001,
+      "PUMP": 26001,
+      "SECONDARY_PUMP": 28001,
+      "CSU": 29001,
+      "EM": 31001,
+      "BTU_METER": 32001,
+      "FLOW_METER": 33001,
+      "EXPANSION_TANK": 34001,
+      "ATCS": 35001,
+      "MAKEUP_TANK": 36001,
+      "HARMONIC_FILTER": 37001
+    },
+    "EQP_PARAM_RELATIONSHIPS": {
+      "AHU": { "master": "SAF_VFD_On_Off_Fbk" },
+      "CHILLER": { "master": "sts_on_off_00" },
+      "PUMP": { "master": "sts_on_off_00" },
+      "SECONDARY_PUMP": { "master": "Sec_Pmp_SS" },
+      "CONDENSER_PUMP": { "master": "sts_on_off_00" },
+      "COOLING_TOWER": { "master": "sts_fan_on_off_00" },
+      "CT_FAN": { "master": "sts_on_off_00" },
+      "PRIMARY_VARIABLE": { "master": "sts_on_off_00" },
+      "FRESH_AIR_UNIT": { "master": "FAU_Opn_SS" },
+      "SS_VENTILATOR_1": { "master": "VEN_Opn_SS" },
+      "SS_BRE_FAN": { "master": "BRE_Opn_SS" },
+      "SS_HTE_FAN": { "master": "HTE_Opn_SS" },
+      "SS_SUBE_FAN": { "master": "SubE_Opn_SS" },
+      "SS_EXHAUST_FAN": { "master": "EF_Opn_SS" }
+    },
+    "EQP_OPS_RULES": {
+      "AHU": {
+        "SAF_VFD_On_Off_Fbk": "SAF_VFD_On_Off",
+        "sts_on_off_00": "cmd_on_off_00"
+      },
+      "VAV": {},
+      "CHILLER": {
+        "sts_on_off_00": "cmd_on_off_00",
+        "CH_On_Off_SS": "CH_On_Off"
+      },
+      "Cooling Tower": {
+        "sts_inlet_vlv_on_off_00": "cmd_inlet_vlv_on_off_00",
+        "sts_fan_on_off_00": "cmd_fan_on_off_00"
+      },
+      "CT_FAN": {},
+      "Primary Pump": {
+        "sts_on_off_00": "cmd_on_off_00"
+      },
+      "SECONDARY_PUMP": {
+        "Sec_Pmp_SS": "Sec_Pmp_On_Off"
+      },
+      "Condenser Pump": {
+        "sts_on_off_00": "cmd_on_off_00"
+      },
+      "FRESH_AIR_UNIT": {
+        "FAU_Opn_SS": "FAU_On_Off"
+      },
+      "SS_VENTILATOR_1": {
+        "VEN_Opn_SS": "VEN_On_Off"
+      },
+      "SS_BRE_FAN": {
+        "BRE_Opn_SS": "BRE_Fan_On_Off"
+      },
+      "SS_HTE_FAN": {
+        "HTE_Opn_SS": "HTE_On_Off"
+      },
+      "SS_SUBE_FAN": {
+        "SubE_Opn_SS": "SubE_Fan_On_Off"
+      },
+      "SS_EXHAUST_FAN": {
+        "EF_Opn_SS": "EF_Fan_On_Off"
+      },
+      "MAU": {},
+      "DCC": {},
+      "EM": {},
+      "WATER_COOLED_HEADER": {},
+      "AIR_COOLED_HEADER": {},
+      "CPM": {},
+      "CT_VARIABLE_FAN": {},
+      "PRIMARY_VARIABLE_PUMPS": {},
+      "BTU_METER": {},
+      "FLOW_METER": {},
+      "EXPANSION_TANK": {},
+      "ATCS": {},
+      "MAKEUP_TANK": {}
+    },
+    "EQUIPMENT_TYPE_DETAILED": {
+      "0x00": ["NONGL_SS_EMS", "em_", "_om_p"],
+      "0xA0": ["NONGL_SS_AHU", "ahu_", "_om_p"],
+      "0xA1": ["NONGL_SS_CR_AHU", "ahucr_", "_om_p"],
+      "0xB0": ["NONGL_SS_CHILLER", "ch_", "_om_p"],
+      "0xB1": ["NONGL_SS_PRIMARY_PUMP", "pu_", "_om_p"],
+      "0xB3": ["NONGL_SS_SECONDARY_PUMPS", "secpu_", "_om_p"],
+      "0xB5": ["NONGL_SS_VAV", "vav_", "_ahu_om_p"],
+      "0xB4": ["NONGL_SS_CONDENSER_PUMPS", "condpu_", "_om_p"],
+      "0xB6": ["NONGL_SS_CONDENSER_PUMP2", "condpu_", "_om_p"],
+      "0xB7": ["NONGL_SS_COOLING_TOWER", "ct_", "_om_p"],
+      "0xB8": ["NONGL_SS_CT_FAN", "ctfv_", "_om_p"],
+      "0xBA": ["NONGL_SS_AIR_COOLED_CHILLER", "ach_", "_om_p"],
+      "0xA9": ["FRESH_AIR_UNIT", "fau_", "_om_p"],
+      "0xAA": ["SS_VENTILATOR_1", "ven_", "_om_p"],
+      "0xAB": ["SS_BRE_FAN", "bref_", "_om_p"],
+      "0xAC": ["SS_HTE_FAN", "htef_", "_om_p"],
+      "0xAD": ["SS_SUBE_FAN", "subef_", "_om_p"],
+      "0xA6": ["SS_EXHAUST_FAN", "exf_", "_om_p"],
+      "0xA7": ["NONGL_SS_TFA", "tfa_", "_om_p"],
+      "0xA8": ["NONGL_SS_MAU", "mau_", "_om_p"],
+      "0xAE": ["NONGL_SS_DCC", "dcc_", "_om_p"],
+      "0xC0": ["NONGL_SS_COMMON_HEADER", "coh_", "_om_p"],
+      "0xC1": ["NONGL_SS_WATER_COOLED_HEADER", "cohw_", "_om_p"],
+      "0xC7": ["NONGL_SS_HEAT_PUMP", "hpmp_", "_om_p"],
+      "0xBC": ["NONGL_SS_CPM", "cpm_", "_om_p"],
+      "0xB2": ["NONGL_SS_PRIMARY_VARIABLE_PUMPS", "pv_", "_om_p"],
+      "0xBF": ["NONGL_SS_HOT_WATER_PUMPS", "hwpmp_", "_om_p"],
+      "0x11": ["NONGL_SS_BTU_METER", "btm_", "_om_p"],
+      "0x12": ["NONGL_SS_FLOW_METER", "flm_", "_om_p"],
+      "0x13": ["NONGL_SS_EXPANSION_TANK", "ext_", "_om_p"],
+      "0x14": ["NONGL_SS_ATCS", "atcs_", "_om_p"],
+      "0x15": ["NONGL_SS_MWP", "mwp", "_om_p"],
+      "0xCB": ["NONGL_SS_PRIMARY_SEQ_PANEL", "priseq_", "_om_p"],
+      "0xB9": ["NONGL_SS_CT_VARIABLE_FAN", "ctfv_", "_om_p"],
+      "0x16": ["NONGL_SS_HARMONIC_FILTER", "hf_", "_om_p"]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+EqpTypeCode,EqpTypeName,ParameterCode,ParameterName,ParameterDescription,ParameterUnit,RangeHigh,RangeLow,ResetValue,ParameterWritable,BACnetObjectType
+0XBA,Air cooled Chiller,1,cmd_on_off_00,CH_01_On/Off Command,percent,100,0,0,,binaryOutput
+0XBA,Air cooled Chiller,2,sts_on_off_00,CH_01_On/Off Status,percent,100,0,0,,binaryInput
+0XBA,Air cooled Chiller,3,cmd_evap_vlv_on_off_00,CH_01_Evap Valve Command,percent,100,0,0,,binaryOutput
+0XBA,Air cooled Chiller,4,sts_evap_vlv_on_off_00,CH_01_Evap Valve Status,percent,100,0,0,,binaryInput
+0XBA,Air cooled Chiller,40965,alm_trip_00,CH_01_Trip Status,percent,100,0,0,,binaryInput
+0XBA,Air cooled Chiller,6,sts_auto_manual_00,CH_01_Auto Manual Status,percent,100,0,0,,binaryInput
+0XB1,Primary Pump,1,cmd_on_off_00,Primary Pump_01_On/Off Command,percent,100,0,0,,binaryOutput
+0XB1,Primary Pump,2,sts_on_off_00,Primary Pump _01_On/Off status,percent,100,0,0,,binaryInput
+0XB1,Primary Pump,40963,alm_trip_00,Primary Pump_01_Trip Status,percent,100,0,0,,binaryInput
+0XB1,Primary Pump,4,sts_auto_manual_00,Primary Pump _01_Auto Manual status,percent,100,0,0,,binaryInput
+0XB3, Secondary Pump,1,cmd_on_off_00,Secondary Pump_01_ On/Off Command,percent,100,0,0,,binaryOutput
+0XB3, Secondary Pump,2,sts_on_off_00,Secondary Pump_01_On/Off status,percent,100,0,0,,binaryInput
+0XB3, Secondary Pump,40963,alm_trip_00,Secondary Pump_01_Trip Status,percent,100,0,0,,binaryInput
+0XB3, Secondary Pump,4,sts_auto_manual_00,Secondary Pump_01_Auto Manual status,percent,100,0,0,,binaryInput
+0XB3, Secondary Pump,5,sts_pump_vfd_frequency_00,Secondary Pump-01 VFD Feedback,percent,100,0,0,,analogInput
+0XB3, Secondary Pump,6,cmd_pump_vfd_frequency_00,Secondary Pump-01 VFD Control,percent,100,0,0,,analogOutput
+0XC0,Header,1,par_out_air_temp_00,Outside Air Temperature,percent,100,0,0,,analogInput
+0XC0,Header,2,par_out_air_humidity_00,Outside Air Humidity,percent,100,0,0,,analogInput
+0XC0,Header,3,par_cwh_sup_temp_01,Chilled Water Supply Header-01 Temperature,percent,100,0,0,,analogInput
+0XC0,Header,4,par_cwh_sup_temp_02,Chilled Water Supply Header-02 Temperature,percent,100,0,0,,analogInput
+0XC0,Header,5,par_cwh_sup_temp_03,Chilled Water Supply Header-03 Temperature,percent,100,0,0,,analogInput
+0XC0,Header,6,par_cwh_ret_temp_01,Chilled Water Return Header-01 Temperature,percent,100,0,0,,analogInput
+0XC0,Header,7,par_cwh_ret_temp_02,Chilled Water Return Header-02 Temperature,percent,100,0,0,,analogInput
+0XC0,Header,8,par_cwh_ret_temp_03,Chilled Water Return Header-03 Temperature,percent,100,0,0,,analogInput
+0XC0,Header,9,par_dpt_01,Differential Pressure Transmitter Load-1,percent,100,0,0,,analogInput
+0XC0,Header,10,par_dpt_02,Differential Pressure Transmitter Load-2,percent,100,0,0,,analogInput

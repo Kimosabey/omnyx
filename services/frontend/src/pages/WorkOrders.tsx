@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Plus, ClipboardList, Calendar, User, AlertTriangle } from "lucide-react";
+import { Plus, ClipboardList, Calendar, User } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import PageTransition from "@/components/layout/PageTransition";

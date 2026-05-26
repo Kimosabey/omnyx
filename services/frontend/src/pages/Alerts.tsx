@@ -5,7 +5,7 @@ import { Filter, RefreshCw } from "lucide-react";
 import PageTransition from "@/components/layout/PageTransition";
 import AlertRow from "@/components/ui/AlertRow";
 import Button from "@/components/ui/Button";
-import Card, { CardHeader, CardTitle } from "@/components/ui/Card";
+import Card from "@/components/ui/Card";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { SkeletonRow } from "@/components/ui/SkeletonLoader";
 import { alertsApi } from "@/lib/api";

@@ -12,12 +12,20 @@ const jwksClient = jwksRsa({
 });
 
 export const authPlugin = fp(async (fastify: FastifyInstance) => {
-  await fastify.register(fastifyJwt, {
-    secret: async (_req: FastifyRequest, token: { header: { kid?: string } }) => {
+  // @fastify/jwt v8 plugin type doesn't align with fastify.register overloads — double-cast
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (fastify.register as unknown as (p: unknown, o: unknown) => Promise<void>)(fastifyJwt, {
+    secret: (
+      _req: FastifyRequest,
+      token: { header: { kid?: string } },
+      callback: (err: Error | null, secret: string) => void,
+    ) => {
       const kid = token.header.kid;
-      if (!kid) throw new Error("JWT missing kid header");
-      const key = await jwksClient.getSigningKey(kid);
-      return key.getPublicKey();
+      if (!kid) return callback(new Error("JWT missing kid header"), "");
+      jwksClient.getSigningKey(kid, (err, key) => {
+        if (err) return callback(err, "");
+        callback(null, key!.getPublicKey());
+      });
     },
     verify: {
       issuer: config.keycloakIssuer,

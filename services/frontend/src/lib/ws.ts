@@ -24,7 +24,7 @@ export function connectWs() {
     try {
       const msg = JSON.parse(ev.data as string) as Record<string, unknown>;
       if (msg.type === "snapshot" && msg.data) {
-        useSnapshotStore.getState().setSnapshot(msg.data as Parameters<typeof useSnapshotStore.getState>["0"]["snapshot"]);
+        useSnapshotStore.getState().setSnapshot(msg.data as import("@/store/snapshot").PlantSnapshot);
       }
     } catch {
       // ignore malformed frames

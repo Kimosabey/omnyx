@@ -1,0 +1,104 @@
+EqpTypeCode,EqpTypeName,ParameterCode,ParameterName,ParameterDescription,ParameterUnit,RangeHigh,RangeLow,ResetValue,ParameterWritable,BACnetObjectType
+0X00,Energy meter,1,par_voltage_01,EM_01_Voltage RY,V,500,0,0,,analogValue
+0X00,Energy meter,2,par_voltage_02,EM_01_Voltage YB,V,500,0,0,,analogValue
+0X00,Energy meter,3,par_voltage_03,EM_01_Voltage BR,V,500,0,0,,analogValue
+0X00,Energy meter,4,par_current_01,EM_01_Current R,A,1000,0,0,,analogValue
+0X00,Energy meter,5,par_current_02,EM_01_Current Y,A,1000,0,0,,analogValue
+0X00,Energy meter,6,par_current_03,EM_01_Current B,A,1000,0,0,,analogValue
+0X00,Energy meter,7,par_pf_01,EM_01_PF R,PF,1,0,0,,analogValue
+0X00,Energy meter,8,par_pf_02,EM_01_PF Y,PF,1,0,0,,analogValue
+0X00,Energy meter,9,par_pf_03,EM_01_PF B,PF,1,0,0,,analogValue
+0X00,Energy meter,10,par_avg_pf_00,EM_01_Average Pf,PF,1,0,0,,analogValue
+0X00,Energy meter,11,par_frequency_00,EM_01_Frequency,Hz,65,45,0,,analogValue
+0X00,Energy meter,12,par_avg_active_power_00,EM_01_Active Power,kW,5000,0,0,,analogValue
+0X00,Energy meter,13,par_avg_reactive_power_00,EM_01_Reactive Power,kVAR,5000,0,0,,analogValue
+0X00,Energy meter,14,par_avg_apparent_power_00,EM_01_Apparent Power,kVA,5000,0,0,,analogValue
+0X00,Energy meter,15,par_energy_00,EM_01_Energy - KWH,kWh,9999999,0,0,,analogValue
+0XB0,Chiller,1,cmd_on_off_00,CH_01_On/Off Command,-,100,0,inactive,,binaryOutput
+0XB0,Chiller,2,sts_on_off_00,CH_01_On/Off status,-,100,0,inactive,,binaryValue
+0XB0,Chiller,3,sts_auto_manual_00,CH_01_Auto Manual Status,-,1,0,1,,analogValue
+0XB0,Chiller,40964,alm_trip_00,CH_01_Trip Status,-,100,0,inactive,,binaryValue
+0XB0,Chiller,5,cmd_evap_vlv_on_off_00,CH_01_Evap Valve Command,-,100,0,inactive,,binaryOutput
+0XB0,Chiller,6,sts_evap_vlv_on_off_00,CH_01_Evap Valve Status,-,100,0,inactive,,binaryInput
+0XB0,Chiller,7,cmd_cond_vlv_on_off_00,CH_01_Cond Valve Command,-,100,0,inactive,,binaryOutput
+0XB0,Chiller,8,sts_cond_vlv_on_off_00,CH_01_Cond Valve Status,-,100,0,inactive,,binaryInput
+0XB0,Chiller,9,par_comp_run_hrs_00,CH_01_Run Hours,hrs,99999,0,0,,analogValue
+0XB0,Chiller,10,cmd_evap_leaving_temp_00,CH_01_Evap Leaving Temp Set Point,degC,15,4,0,,analogValue
+0XB0,Chiller,11,sts_evap_leaving_temp_00,CH_01_Evap Leaving Temp ,degC,20,0,0,,analogValue
+0XB0,Chiller,12,par_evap_entering_temp_00,CH_01_Evap Entering Temp ,degC,25,2,0,,analogValue
+0XB0,Chiller,13,sts_evap_flow_00,CH_01_Evap Flow Switch,-,100,0,inactive,,binaryValue
+0XB0,Chiller,14,par_suction_pressure_00,CH_01_Evaporator Pressure,bar,15,0,0,,analogValue
+0XB0,Chiller,15,par_cond_leaving_temp_00,CH_01_Cond Leaving Temp ,degC,50,20,0,,analogValue
+0XB0,Chiller,16,par_cond_entering_temp_00,CH_01_Cond Entering Temp ,degC,50,20,0,,analogValue
+0XB0,Chiller,17,sts_cond_flow_00,CH_01_Cond Flow Switch,-,100,0,inactive,,binaryValue
+0XB0,Chiller,18,par_discharge_pressure_00,CH_01_Condensor Pressure,bar,30,0,0,,analogValue
+0XB0,Chiller,19,par_discharge_temp_00,CH_01_Discharge Temperature,degC,120,20,0,,analogValue
+0XB0,Chiller,20,par_comp_percent_load_00,CH_01_% FLA / % RLA,%,100,0,0,,analogValue
+0XB0,Chiller,21,par_comp_oil_pressure_00,CH_01_Oil Pressure,bar,10,0,0,,analogValue
+0XB0,Chiller,22,par_avg_current_00,CH_01_Motor Current,A,1000,0,0,,analogValue
+0XB0,Chiller,23,par_vsd_frequency_00,CH_01_VSD Frequency,Hz,60,0,0,,analogValue
+0XB0,Chiller,40984,alm_fault_00,CH_01_Fault Code,-,255,0,0,,analogValue
+0XB1,Primary Pump,1,cmd_on_off_00,PP_01_On/Off Command,-,100,0,0,,binaryOutput
+0XB1,Primary Pump,2,sts_on_off_00,PP_01_On/Off status,-,100,0,inactive,,binaryValue
+0XB1,Primary Pump,3,sts_auto_manual_00,PP_01_Auto Manual Status,-,2,0,2,,analogValue
+0XB1,Primary Pump,40964,alm_trip_00,PP_01_Trip Status,-,100,0,inactive,,binaryValue
+0XB1,Primary Pump,5,par_speed_00,PP_01_Speed,%,100,0,0,,analogValue
+0XB1,Primary Pump,6,par_avg_power_00,PP_01_Motor Power,kW,500,0,0,,analogValue
+0XB1,Primary Pump,7,par_avg_voltage_00,PP_01_Motor Voltage,V,500,0,0,,analogValue
+0XB1,Primary Pump,8,par_avg_current_00,PP_01_Motor Current,A,500,0,0,,analogValue
+0XB1,Primary Pump,9,par_run_hours_00,PP_01_Run Hours,hrs,99999,0,0,,analogValue
+0XB1,Primary Pump,10,par_energy_00,PP_01_Energy,kWh,9999999,0,0,,analogValue
+0XB4,Condenser Pump,1,cmd_on_off_00,CP_01_On/Off Command,-,100,0,0,,binaryOutput
+0XB4,Condenser Pump,2,sts_on_off_00,CP_01_On/Off status,-,100,0,inactive,,binaryValue
+0XB4,Condenser Pump,3,sts_auto_manual_00,CP_01_Auto Manual Status,-,2,0,2,,analogValue
+0XB4,Condenser Pump,40964,alm_trip_00,CP_01_Trip Status,-,100,0,inactive,,binaryValue
+0XB4,Condenser Pump,5,par_speed_00,CP_01_Speed,%,100,0,0,,analogValue
+0XB4,Condenser Pump,6,par_avg_power_00,CP_01_Motor Power,kW,500,0,0,,analogValue
+0XB4,Condenser Pump,7,par_avg_voltage_00,CP_01_Motor Voltage,V,500,0,0,,analogValue
+0XB4,Condenser Pump,8,par_avg_current_00,CP_01_Motor Current,A,500,0,0,,analogValue
+0XB4,Condenser Pump,9,par_run_hours_00,CP_01_Run Hours,hrs,99999,0,0,,analogValue
+0XB4,Condenser Pump,10,par_energy_00,CP_01_Energy,kWh,9999999,0,0,,analogValue
+0XB7,Cooling Tower,1,cmd_on_off_00,CT_01_On/Off Command,-,100,0,inactive,,binaryOutput
+0XB7,Cooling Tower,2,sts_on_off_00,CT_01_On/Off status,-,100,0,inactive,,binaryInput
+0XB7,Cooling Tower,3,cmd_fan_frequency_00,CT_01_VFD Fz Command,Hz,60,0,inactive,,analogOutput
+0XB7,Cooling Tower,4,sts_fan_frequency_00,CT_01_VFD Fz Status,Hz,60,0,0,,analogValue
+0XB7,Cooling Tower,5,sts_auto_manual_00,CT_01_Auto Manual Status,-,100,0,inactive,,binaryInput
+0XB7,Cooling Tower,40966,alm_trip_00,CT_01_Trip Status,-,100,0,inactive,,binaryInput
+0XB7,Cooling Tower,7,sts_level_switch_high_00,CT_01_Water Level High,-,100,0,inactive,,binaryInput
+0XB7,Cooling Tower,8,sts_level_switch_low_00,CT_01_Water Level Low,-,100,0,inactive,,binaryInput
+0XB7,Cooling Tower,9,cmd_vlv_on_off_00,CT_01_CT Inlet Valve Command,-,100,0,inactive,,binaryOutput
+0XB7,Cooling Tower,10,sts_vlv_on_off_01,CT_01_CT Valve Inlet Status 1,-,100,0,0,,binaryInput
+0XB7,Cooling Tower,11,sts_vlv_on_off_02,CT_01_CT Valve Inlet Status 2,-,100,0,0,,binaryInput
+0XB7,Cooling Tower,12,par_fan_speed_00,CT_01_Speed,%,100,0,0,,analogValue
+0XB7,Cooling Tower,13,par_avg_power_00,CT_01_Motor Power,kW,200,0,0,,analogValue
+0XB7,Cooling Tower,14,par_avg_voltage_00,CT_01_Motor Voltage,V,500,0,0,,analogValue
+0XB7,Cooling Tower,15,par_avg_current_00,CT_01_Motor Current,A,500,0,0,,analogValue
+0XB7,Cooling Tower,16,par_run_hours_00,CT_01_Run Hours,hrs,99999,0,0,,analogValue
+0XB7,Cooling Tower,17,par_energy_00,CT_01_Energy,kWh,9999999,0,0,,analogValue
+0XC0,Header,1,par_out_air_temp_00,Outside Air Temperature ,degC,50,-10,0,,analogInput
+0XC0,Header,2,par_out_air_humidity_00,Outside Air Humidity,%,100,0,0,,analogInput
+0XC0,Header,3,par_cwh_sup_temp_01,Chilled Water Supply Header Temperature 1,degC,20,0,0,,analogInput
+0XC0,Header,4,par_cwh_sup_temp_02,Chilled Water Supply Header Temperature 2,degC,20,0,0,,analogInput
+0XC0,Header,5,par_cwh_ret_temp_01,Chilled Water Return Header Temperature 1,degC,30,5,0,,analogInput
+0XC0,Header,6,par_cwh_ret_temp_02,Chilled Water Return Header Temperature 2,degC,30,5,0,,analogInput
+0XC0,Header,7,par_dpt_01,Differential Pressure Transmitter - 1,bar,5,0,0,,analogInput
+0XC0,Header,8,par_dpt_02,Differential Pressure Transmitter - 2,bar,5,0,0,,analogInput
+0XC0,Header,9,par_cdw_sup_temp_00,Condenser Water Supply Header Temperature,degC,50,20,0,,analogInput
+0XC0,Header,10,par_cdw_ret_temp_00,Condenser Water Return Header Temperature,degC,50,25,0,,analogInput
+0XC0,Header,11,cmd_cwh_sup_temp_00,Chilled Water Supply Header Temperature Setpoint,degC,15,4,0,,analogValue
+0XC0,Header,12,cmd_cdw_sup_temp_00,Condenser Water Supply Header Temperature setpoint,degC,40,22,0,,analogValue
+0XC0,Header,13,par_actual_flow_00,Btu Meter Actual Flow,m3/h,1000,0,0,,analogValue
+0XC0,Header,14,par_actual_power_00,Btu Meter Actual Power,kW,5000,0,0,,analogValue
+0XC0,Header,15,par_energy_consump_00,Btu Meter Energy Consumption,kWh,9999999,0,0,,analogValue
+0XC0,Header,16,par_inlet_temp_00,Btu Meter Inlet Temperature,degC,20,0,0,,analogValue
+0XC0,Header,17,par_outlet_temp_00,Btu Meter Outlet Temperature,degC,30,0,0,,analogValue
+0xB3,Secondary Pump,1,sts_on_off_00,SP_01_On/Off status,-,100,0,inactive,,binaryValue
+0xB3,Secondary Pump,40962,alm_trip_00,SP_01_Trip Status,-,100,0,inactive,,binaryValue
+0xB3,Secondary Pump,3,par_speed_00,SP_01_Speed,%,100,0,0,,analogValue
+0xB3,Secondary Pump,4,par_avg_power_00,SP_01_Motor Power,kW,500,0,0,,analogValue
+0xB3,Secondary Pump,5,par_avg_voltage_00,SP_01_Motor Voltage,V,500,0,0,,analogValue
+0xB3,Secondary Pump,6,par_avg_current_00,SP_01_Motor Current,A,500,0,0,,analogValue
+0xB3,Secondary Pump,7,par_run_hours_00,SP_01_Run Hours,hrs,99999,0,0,,analogValue
+0xB3,Secondary Pump,8,par_energy_00,SP_01_Energy,kWh,9999999,0,0,,analogValue
+0xCB,PumpStation,1,cmd_on_off_00,SP_Seq_01_On/Off Command,-,100,0,inactive,,binaryOutput
+0xCB,PumpStation,2,sts_on_off_00,SP_Seq_On/Off status,-,100,0,inactive,,binaryValue

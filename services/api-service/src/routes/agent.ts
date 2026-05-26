@@ -89,7 +89,7 @@ export async function agentRoutes(fastify: FastifyInstance) {
   );
 
   // Approve / reject
-  fastify.post<{ Params: { id: string }; Body: { action: "approve" | "reject"; note?: string } }>(
+  fastify.post<{ Params: { id: string; action: string }; Body: { note?: string } }>(
     "/api/v1/approvals/:id/:action", pre, async (req, reply) => {
       const tid = getTenantId(req);
       const user = (req.user as Record<string, unknown>).sub as string;

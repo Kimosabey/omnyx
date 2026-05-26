@@ -55,9 +55,8 @@ export default function TelemetryChart({
     });
     const ys = data.map((d) => d.v);
 
-    const markLines: EChartsOption["series"] extends Array<infer S>
-      ? S extends { markLine?: infer ML } ? ML : never
-      : never = thresholdWarn || thresholdBad
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const markLines: any = thresholdWarn || thresholdBad
       ? {
           silent: true,
           lineStyle: { type: "dashed" },

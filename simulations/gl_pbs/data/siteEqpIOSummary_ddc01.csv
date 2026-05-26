@@ -1,0 +1,238 @@
+DDCId,ObjectType,ObjectId,EqpType,EqpId,ParamName,ParamFullName,GLCode
+DDC01,analogInput,1,C0,01,par_out_air_temp_00,Outside Air Temperature ,GL 01 00 01 C0 0 001
+DDC01,analogInput,2,C0,01,par_out_air_humidity_00,Outside Air Humidity,GL 01 00 01 C0 0 002
+DDC01,analogInput,3,C0,01,par_cwh_sup_temp_00,Chilled Water Supply Header Temperature,GL 01 00 01 C0 0 003
+DDC01,analogInput,4,C0,01,par_cwh_ret_temp_00,Chilled Water Return Header Temperature,GL 01 00 01 C0 0 004
+DDC01,analogInput,5,BA,01,par_dpt_00,CH-01 Chiller DPT,GL 01 00 01 BA 0 002
+DDC01,analogInput,6,BA,02,par_dpt_00,CH-02 Chiller DPT,GL 01 00 02 BA 0 002
+DDC01,binaryOutput,7,BA,01,cmd_on_off_00,CH-01 On/Off Command,GL 01 00 01 BA 0 001
+DDC01,binaryOutput,8,BA,02,cmd_on_off_00,CH-02 On/Off Command,GL 01 00 02 BA 0 001
+DDC01,binaryOutput,9,BA,01,cmd_evap_vlv_on_off_00,CH-01 Evap Valve Command,GL 01 00 01 BA 0 003
+DDC01,binaryOutput,10,BA,02,cmd_evap_vlv_on_off_00,CH-02 Evap Valve Command,GL 01 00 02 BA 0 003
+DDC01,binaryValue,11,BA,01,sts_on_off_01,CH-01 C1 On/Off status,GL 01 00 01 BA 0 007
+DDC01,binaryValue,12,BA,01,sts_on_off_02,CH-01 C2 On/Off status,GL 01 00 01 BA 0 008
+DDC01,analogInput,13,B2,01,sts_vfd_00,PP-01 VFD Status,GL 02 00 01 B2 0 001
+DDC01,analogInput,14,B2,02,sts_vfd_00,PP-02 VFD Status,GL 02 00 02 B2 0 001
+DDC01,analogInput,15,B2,03,sts_vfd_00,PP-03 VFD Status,GL 02 00 03 B2 0 001
+DDC01,analogInput,16,C0,01,sts_bypass_vlv_on_off_00,By Pass Valve Feeback,GL 02 00 01 C0 0 008
+DDC01,analogOutput,17,C0,01,cmd_bypass_vlv_on_off_00,By Pass Valve Command,GL 02 00 01 C0 0 007
+DDC01,binaryOutput,18,CB,01,cmd_on_off_00,PS-01 On/Off Command,GL 02 00 01 CB 0 001
+DDC01,binaryValue,19,CB,01,sts_on_off_00,PS-01 On/Off status,GL 02 00 01 CB 0 002
+DDC01,analogInput,20,A7,01,par_sat_00,TFA-01 Air Leaving Temperature,GL 03 00 01 A7 0 004
+DDC01,analogInput,21,A7,01,par_percent_rh_00,TFA-01 Air Leaving Humidity,GL 03 00 01 A7 0 003
+DDC01,analogInput,22,A7,02,par_sat_00,TFA-02 Air Leaving Temperature,GL 03 00 02 A7 0 004
+DDC01,analogInput,23,A7,02,par_percent_rh_00,TFA-02 Air Leaving Humidity,GL 03 00 02 A7 0 003
+DDC01,analogOutput,24,A7,01,cmd_vlv_ctrl_00,TFA-01 Chilled Water Valve Control,GL 03 00 01 A7 0 005
+DDC01,analogOutput,25,A7,02,cmd_vlv_ctrl_00,TFA-02 Chilled Water Valve Control,GL 03 00 02 A7 0 005
+DDC01,binaryInput,26,A7,01,sts_on_off_00,TFA-01 On/Off Status,GL 03 00 01 A7 0 002
+DDC01,binaryInput,27,A7,02,sts_on_off_00,TFA-02 On/Off Status,GL 03 00 02 A7 0 002
+DDC01,binaryOutput,28,A7,01,cmd_on_off_00,TFA-01 On/Off Command,GL 03 00 01 A7 0 001
+DDC01,binaryOutput,29,A7,02,cmd_on_off_00,TFA-02 On/Off Command,GL 03 00 02 A7 0 001
+DDC01,analogInput,30,C7,01,par_hot_water_ret_temp_00,HP-01 Heat Pump return Temp,GL 04 00 01 C7 0 003
+DDC01,analogInput,31,C7,02,par_hot_water_ret_temp_00,HP-02 Heat Pump return Temp,GL 04 00 02 C7 0 003
+DDC01,analogInput,32,C0,01,par_hot_sup_temp_00,Hot Water Supply Header Temperature,GL 04 00 01 C0 0 005
+DDC01,analogInput,33,C0,01,par_hot_ret_temp_00,Hot Water Return Header Temperature,GL 04 00 01 C0 0 006
+DDC01,binaryOutput,34,C7,01,cmd_on_off_00,HP-01 On/Off Command,GL 04 00 01 C7 0 001
+DDC01,binaryOutput,35,C7,02,cmd_on_off_00,HP-02 Heat Pump On/Off Command,GL 04 00 02 C7 0 001
+DDC01,binaryInput,36,C7,01,sts_on_off_00,HP-01 Chiller On/Off status,GL 04 00 01 C7 0 002
+DDC01,binaryInput,37,C7,02,sts_on_off_00,HP-02 Heat Pump On/Off status,GL 04 00 02 C7 0 002
+DDC01,binaryInput,38,BF,01,sts_on_off_00,HWP-01 On/Off status,GL 04 00 01 BF 0 002
+DDC01,binaryInput,39,BF,02,sts_on_off_00,HWP-02 On/Off status,GL 04 00 02 BF 0 002
+DDC01,binaryOutput,40,BF,01,cmd_on_off_00,HWP-01 On/Off Command,GL 04 00 01 BF 0 001
+DDC01,binaryOutput,41,BF,02,cmd_on_off_00,HWP-02 On/Off Command,GL 04 00 02 BF 0 001
+DDC01,analogInput,42,A1,01,par_sat_00,AHU-CR-01 Supply Duct Temperature,GL 05 00 01 A1 0 006
+DDC01,analogInput,43,A1,01,par_rat_00,AHU-CR-01 Return Duct Temperature,GL 05 00 01 A1 0 007
+DDC01,analogInput,44,A1,01,par_percent_rh_00,AHU-CR-01 Return Duct Humidity,GL 05 00 01 A1 0 008
+DDC01,analogInput,45,A1,01,sts_vfd_00,AHU-CR-01 Fan VFD Status,GL 05 00 01 A1 0 009
+DDC01,analogOutput,46,A1,01,cmd_vfd_00,AHU-CR-01 VFD speed control,GL 05 00 01 A1 0 00A
+DDC01,analogOutput,47,A1,01,cmd_vlv_ctrl_01,AHU-CR-01 Chilled Water Valve Control,GL 05 00 01 A1 0 00B
+DDC01,analogOutput,48,A1,01,cmd_vlv_ctrl_02,AHU-CR-01 Hot Water Coil Control,GL 05 00 01 A1 0 00C
+DDC01,binaryInput,49,A1,01,sts_on_off_00,AHU-CR-01 On/Off Status,GL 05 00 01 A1 0 002
+DDC01,binaryInput,50,A1,01,sts_auto_manual_00,AHU-CR-01 Auto/Manual Status,GL 05 00 01 A1 0 003
+DDC01,binaryInput,51,A1,01,sts_filter_01,AHU-CR-01 Fine Filter DP Switch,GL 05 00 01 A1 0 004
+DDC01,binaryInput,52,A1,01,sts_filter_02,AHU-CR-01 Hepa Filter DP Switch,GL 05 00 01 A1 0 005
+DDC01,binaryOutput,53,A1,01,cmd_on_off_00,AHU-CR-01 On/Off Command,GL 05 00 01 A1 0 001
+DDC01,analogInput,54,A1,02,par_sat_00,AHU-CR-02 Supply Duct Temperature,GL 06 00 02 A1 0 006
+DDC01,analogInput,55,A1,02,par_rat_00,AHU-CR-02 Return Duct Temperature,GL 06 00 02 A1 0 007
+DDC01,analogInput,56,A1,02,par_percent_rh_00,AHU-CR-02 Return Duct Humidity,GL 06 00 02 A1 0 008
+DDC01,analogInput,57,A1,02,sts_vfd_00,AHU-CR-02 Fan VFD Status,GL 06 00 02 A1 0 009
+DDC01,analogOutput,58,A1,02,cmd_vfd_00,AHU-CR-02 VFD speed control,GL 06 00 02 A1 0 00A
+DDC01,analogOutput,59,A1,02,cmd_vlv_ctrl_01,AHU-CR-02 Chilled Water Valve Control,GL 06 00 02 A1 0 00B
+DDC01,analogOutput,60,A1,02,cmd_vlv_ctrl_02,AHU-CR-02 Hot Water Coil Control,GL 06 00 02 A1 0 00C
+DDC01,binaryInput,61,A1,02,sts_on_off_00,AHU-CR-02 On/Off Status,GL 06 00 02 A1 0 002
+DDC01,binaryInput,62,A1,02,sts_auto_manual_00,AHU-CR-02 Auto/Manual Status,GL 06 00 02 A1 0 003
+DDC01,binaryInput,63,A1,02,sts_filter_01,AHU-CR-02 Fine Filter DP Switch,GL 06 00 02 A1 0 004
+DDC01,binaryInput,64,A1,02,sts_filter_02,AHU-CR-02 Hepa Filter DP Switch,GL 06 00 02 A1 0 005
+DDC01,binaryOutput,65,A1,02,cmd_on_off_00,AHU-CR-02 On/Off Command,GL 06 00 02 A1 0 001
+DDC01,analogInput,66,A1,03,par_sat_00,AHU-CR-03 Supply Duct Temperature,GL 07 00 03 A1 0 006
+DDC01,analogInput,67,A1,03,par_rat_00,AHU-CR-03 Return Duct Temperature,GL 07 00 03 A1 0 007
+DDC01,analogInput,68,A1,03,par_percent_rh_00,AHU-CR-03 Return Duct Humidity,GL 07 00 03 A1 0 008
+DDC01,analogInput,69,A1,03,sts_vfd_00,AHU-CR-03 Fan VFD Status,GL 07 00 03 A1 0 009
+DDC01,analogOutput,70,A1,03,cmd_vfd_00,AHU-CR-03 VFD speed control,GL 07 00 03 A1 0 00A
+DDC01,analogOutput,71,A1,03,cmd_vlv_ctrl_01,AHU-CR-03 Chilled Water Valve Control,GL 07 00 03 A1 0 00B
+DDC01,analogOutput,72,A1,03,cmd_vlv_ctrl_02,AHU-CR-03 Hot Water Coil Control,GL 07 00 03 A1 0 00C
+DDC01,binaryInput,73,A1,03,sts_on_off_00,AHU-CR-03 On/Off Status,GL 07 00 03 A1 0 002
+DDC01,binaryInput,74,A1,03,sts_auto_manual_00,AHU-CR-03 Auto/Manual Status,GL 07 00 03 A1 0 003
+DDC01,binaryInput,75,A1,03,sts_filter_01,AHU-CR-03 Fine Filter DP Switch,GL 07 00 03 A1 0 004
+DDC01,binaryInput,76,A1,03,sts_filter_02,AHU-CR-03 Hepa Filter DP Switch,GL 07 00 03 A1 0 005
+DDC01,binaryOutput,77,A1,03,cmd_on_off_00,AHU-CR-03 On/Off Command,GL 07 00 03 A1 0 001
+DDC01,analogInput,78,A1,04,par_sat_00,AHU-CR-04 Supply Duct Temperature,GL 08 00 04 A1 0 006
+DDC01,analogInput,79,A1,04,par_rat_00,AHU-CR-04 Return Duct Temperature,GL 08 00 04 A1 0 007
+DDC01,analogInput,80,A1,04,par_percent_rh_00,AHU-CR-04 Return Duct Humidity,GL 08 00 04 A1 0 008
+DDC01,analogInput,81,A1,04,sts_vfd_00,AHU-CR-04 Fan VFD Status,GL 08 00 04 A1 0 009
+DDC01,analogOutput,82,A1,04,cmd_vfd_00,AHU-CR-04 VFD speed control,GL 08 00 04 A1 0 00A
+DDC01,analogOutput,83,A1,04,cmd_vlv_ctrl_01,AHU-CR-04 Chilled Water Valve Control,GL 08 00 04 A1 0 00B
+DDC01,analogOutput,84,A1,04,cmd_vlv_ctrl_02,AHU-CR-04 Hot Water Coil Control,GL 08 00 04 A1 0 00C
+DDC01,binaryInput,85,A1,04,sts_on_off_00,AHU-CR-04 On/Off Status,GL 08 00 04 A1 0 002
+DDC01,binaryInput,86,A1,04,sts_auto_manual_00,AHU-CR-04 Auto/Manual Status,GL 08 00 04 A1 0 003
+DDC01,binaryInput,87,A1,04,sts_filter_01,AHU-CR-04 Fine Filter DP Switch,GL 08 00 04 A1 0 004
+DDC01,binaryInput,88,A1,04,sts_filter_02,AHU-CR-04 Hepa Filter DP Switch,GL 08 00 04 A1 0 005
+DDC01,binaryOutput,89,A1,04,cmd_on_off_00,AHU-CR-04 On/Off Command,GL 08 00 04 A1 0 001
+DDC01,analogInput,90,A1,05,par_sat_00,AHU-CR-05 Supply Duct Temperature,GL 09 00 05 A1 0 006
+DDC01,analogInput,91,A1,05,par_rat_00,AHU-CR-05 Return Duct Temperature,GL 09 00 05 A1 0 007
+DDC01,analogInput,92,A1,05,par_percent_rh_00,AHU-CR-05 Return Duct Humidity,GL 09 00 05 A1 0 008
+DDC01,analogInput,93,A1,05,sts_vfd_00,AHU-CR-05 Fan VFD Status,GL 09 00 05 A1 0 009
+DDC01,analogOutput,94,A1,05,cmd_vfd_00,AHU-CR-05 VFD speed control,GL 09 00 05 A1 0 00A
+DDC01,analogOutput,95,A1,05,cmd_vlv_ctrl_01,AHU-CR-05 Chilled Water Valve Control,GL 09 00 05 A1 0 00B
+DDC01,analogOutput,96,A1,05,cmd_vlv_ctrl_02,AHU-CR-05 Hot Water Coil Control,GL 09 00 05 A1 0 00C
+DDC01,binaryInput,97,A1,05,sts_on_off_00,AHU-CR-05 On/Off Status,GL 09 00 05 A1 0 002
+DDC01,binaryInput,98,A1,05,sts_auto_manual_00,AHU-CR-05 Auto/Manual Status,GL 09 00 05 A1 0 003
+DDC01,binaryInput,99,A1,05,sts_filter_01,AHU-CR-05 Fine Filter DP Switch,GL 09 00 05 A1 0 004
+DDC01,binaryInput,100,A1,05,sts_filter_02,AHU-CR-05 Hepa Filter DP Switch,GL 09 00 05 A1 0 005
+DDC01,binaryOutput,101,A1,05,cmd_on_off_00,AHU-CR-05 On/Off Command,GL 09 00 05 A1 0 001
+DDC01,analogInput,102,A0,01,par_sat_00,AHU-NCR-01 Supply Duct Temperature,GL 10 00 01 A0 0 002
+DDC01,analogInput,103,A0,01,par_rat_00,AHU-NCR-01  Return Duct Temperature,GL 10 00 01 A0 0 003
+DDC01,analogInput,104,A0,01,par_percent_rh_00,AHU-NCR-01 Return Duct Humidity,GL 10 00 01 A0 0 004
+DDC01,analogInput,105,A0,01,sts_vfd_00,AHU-NCR-01 Fan VFD Status,GL 10 00 01 A0 0 005
+DDC01,analogOutput,106,A0,01,cmd_vfd_00,AHU-NCR-01 VFD speed control,GL 10 00 01 A0 0 008
+DDC01,analogOutput,107,A0,01,cmd_vlv_ctrl_00,AHU-NCR-01 Chilled Water Valve Control,GL 10 00 01 A0 0 009
+DDC01,binaryInput,108,A0,01,sts_auto_manual_00,AHU-NCR-01 Auto/Manual Status,GL 10 00 01 A0 0 006
+DDC01,binaryInput,109,A0,01,sts_filter_00,AHU-NCR-01 Fine Filter DP Switch,GL 10 00 01 A0 0 007
+DDC01,binaryOutput,110,A0,01,cmd_on_off_00,AHU-NCR-01 On/Off Command,GL 10 00 01 A0 0 00A
+DDC01,binaryOutput,111,A0,01,sts_on_off_00,AHU-NCR-01 On/Off Status,GL 10 00 01 A0 0 001
+DDC01,analogInput,112,A0,02,par_sat_00,AHU-NCR-02 Supply Duct Temperature,GL 11 00 02 A0 0 002
+DDC01,analogInput,113,A0,02,par_rat_00,AHU-NCR-02  Return Duct Temperature,GL 11 00 02 A0 0 003
+DDC01,analogInput,114,A0,02,par_percent_rh_00,AHU-NCR-02 Return Duct Humidity,GL 11 00 02 A0 0 004
+DDC01,analogInput,115,A0,02,sts_vfd_00,AHU-NCR-02 Fan VFD Status,GL 11 00 02 A0 0 005
+DDC01,analogOutput,116,A0,02,cmd_vfd_00,AHU-NCR-02 VFD speed control,GL 11 00 02 A0 0 008
+DDC01,analogOutput,117,A0,02,cmd_vlv_ctrl_00,AHU-NCR-02 Chilled Water Valve Control,GL 11 00 02 A0 0 009
+DDC01,binaryInput,118,A0,02,sts_auto_manual_00,AHU-NCR-02 Auto/Manual Status,GL 11 00 02 A0 0 006
+DDC01,binaryInput,119,A0,02,sts_filter_00,AHU-NCR-02 Fine Filter DP Switch,GL 11 00 02 A0 0 007
+DDC01,binaryOutput,120,A0,02,cmd_on_off_00,AHU-NCR-02 On/Off Command,GL 11 00 02 A0 0 00A
+DDC01,binaryOutput,121,A0,02,sts_on_off_00,AHU-NCR-02 On/Off Status,GL 11 00 02 A0 0 001
+DDC01,analogInput,122,A0,03,par_sat_00,AHU-NCR-03 Supply Duct Temperature,GL 12 00 03 A0 0 002
+DDC01,analogInput,123,A0,03,par_rat_00,AHU-NCR-03  Return Duct Temperature,GL 12 00 03 A0 0 003
+DDC01,analogInput,124,A0,03,par_percent_rh_00,AHU-NCR-03 Return Duct Humidity,GL 12 00 03 A0 0 004
+DDC01,analogInput,125,A0,03,sts_vfd_00,AHU-NCR-03 Fan VFD Status,GL 12 00 03 A0 0 005
+DDC01,analogOutput,126,A0,03,cmd_vfd_00,AHU-NCR-03 VFD speed control,GL 12 00 03 A0 0 008
+DDC01,analogOutput,127,A0,03,cmd_vlv_ctrl_00,AHU-NCR-03 Chilled Water Valve Control,GL 12 00 03 A0 0 009
+DDC01,binaryInput,128,A0,03,sts_auto_manual_00,AHU-NCR-03 Auto/Manual Status,GL 12 00 03 A0 0 006
+DDC01,binaryInput,129,A0,03,sts_filter_00,AHU-NCR-03 Fine Filter DP Switch,GL 12 00 03 A0 0 007
+DDC01,binaryOutput,130,A0,03,cmd_on_off_00,AHU-NCR-03 On/Off Command,GL 12 00 03 A0 0 00A
+DDC01,binaryOutput,131,A0,03,cmd_on_off_00,AHU-NCR-03 On/Off Status,GL 12 00 03 A0 0 001
+DDC01,analogInput,132,A0,04,par_sat_00,AHU-NCR-04 Supply Duct Temperature,GL 13 00 04 A0 0 002
+DDC01,analogInput,133,A0,04,par_rat_00,AHU-NCR-04  Return Duct Temperature,GL 13 00 04 A0 0 003
+DDC01,analogInput,134,A0,04,par_percent_rh_00,AHU-NCR-04 Return Duct Humidity,GL 13 00 04 A0 0 004
+DDC01,analogInput,135,A0,04,sts_vfd_00,AHU-NCR-04 Fan VFD Status,GL 13 00 04 A0 0 005
+DDC01,analogOutput,136,A0,04,cmd_vfd_00,AHU-NCR-04 VFD speed control,GL 13 00 04 A0 0 008
+DDC01,analogOutput,137,A0,04,cmd_vlv_ctrl_00,AHU-NCR-04 Chilled Water Valve Control,GL 13 00 04 A0 0 009
+DDC01,binaryInput,138,A0,04,sts_auto_manual_00,AHU-NCR-04 Auto/Manual Status,GL 13 00 04 A0 0 006
+DDC01,binaryInput,139,A0,04,sts_filter_00,AHU-NCR-04 Fine Filter DP Switch,GL 13 00 04 A0 0 007
+DDC01,binaryOutput,140,A0,04,cmd_on_off_00,AHU-NCR-04 On/Off Command,GL 13 00 04 A0 0 00A
+DDC01,binaryOutput,141,A0,04,cmd_on_off_00,AHU-NCR-04 On/Off Status,GL 13 00 04 A0 0 001
+DDC01,analogValue,142,BA,01,cmd_evap_leaving_temp_00,CH-01 Evap Leaving Temp Set Point,GL 14 00 01 BA 0 009
+DDC01,analogValue,143,BA,01,sts_evap_leaving_temp_00,CH-01 Evap Leaving Temp ,GL 14 00 01 BA 0 00A
+DDC01,analogValue,144,BA,01,par_evap_entering_temp_00,CH-01 Evap Entering Temp ,GL 14 00 01 BA 0 00B
+DDC01,analogValue,145,BA,01,par_comp_percent_load_00,CH-01 % FLA / % RLA,GL 14 00 01 BA 0 00D
+DDC01,analogValue,146,BA,01,par_comp_percent_load_01,CH-01 C1 % Load ,GL 14 00 01 BA 0 00E
+DDC01,analogValue,147,BA,01,par_comp_percent_load_02,CH-01 C2 % Load ,GL 14 00 01 BA 0 00F
+DDC01,analogValue,148,BA,01,par_suction_pressure_01,CH-01 C1 Evaporator Pressure,GL 14 00 01 BA 0 010
+DDC01,analogValue,149,BA,01,par_suction_pressure_02,CH-01 C2 Evaporator Pressure,GL 14 00 01 BA 0 011
+DDC01,analogValue,150,BA,01,par_discharge_pressure_01,CH-01 C1 Condensor Pressure,GL 14 00 01 BA 0 012
+DDC01,analogValue,151,BA,01,par_discharge_pressure_02,CH-01 C2 Condensor Pressure,GL 14 00 01 BA 0 013
+DDC01,analogValue,152,BA,01,par_suction_temperature_01,CH-01 C1 Suction Temperature,GL 14 00 01 BA 0 014
+DDC01,analogValue,153,BA,01,par_suction_temperature_02,CH-01 C2 Suction Temperature,GL 14 00 01 BA 0 015
+DDC01,analogValue,154,BA,01,par_discharge_temperature_01,CH-01 C1 Discharge Temperature,GL 14 00 01 BA 0 016
+DDC01,analogValue,155,BA,01,par_discharge_temperature_02,CH-01 C2 Discharge Temperature,GL 14 00 01 BA 0 017
+DDC01,analogValue,156,BA,01,par_comp_run_hrs_01,CH-01 C1 Run Hours,GL 14 00 01 BA 0 018
+DDC01,analogValue,157,BA,01,par_comp_run_hrs_02,CH-01 C2 Run Hours,GL 14 00 01 BA 0 019
+DDC01,analogValue,158,BA,01,par_comp_oil_pressure_01,CH-01 C1 Oil Pressure,GL 14 00 01 BA 0 01A
+DDC01,analogValue,159,BA,01,par_comp_oil_pressure_02,CH-01 C2 Oil Pressure,GL 14 00 01 BA 0 01B
+DDC01,analogValue,160,BA,01,par_exv_01,CH-01 C1 Exv,GL 14 00 01 BA 0 01C
+DDC01,analogValue,161,BA,01,par_exv_02,CH-01 C2 Exv,GL 14 00 01 BA 0 01D
+DDC01,analogValue,162,BA,01,par_avg_current_00,CH-01 Chiller Current,GL 14 00 01 BA 0 01E
+DDC01,analogValue,163,BA,01,alm_fault_00,CH-01 Fault Code,GL 14 00 01 BA A 01F
+DDC01,analogValue,164,BA,02,cmd_evap_leaving_temp_00,CH-02 Evap Leaving Temp Set Point,GL 14 00 02 BA 0 009
+DDC01,analogValue,165,BA,02,sts_evap_leaving_temp_00,CH-02 Evap Leaving Temp ,GL 14 00 02 BA 0 00A
+DDC01,analogValue,166,BA,02,par_evap_entering_temp_00,CH-02 Evap Entering Temp ,GL 14 00 02 BA 0 00B
+DDC01,analogValue,167,BA,02,par_comp_percent_load_00,CH-02 % FLA / % RLA,GL 14 00 02 BA 0 00D
+DDC01,analogValue,168,BA,02,par_comp_percent_load_01,CH-02 C1 % Load ,GL 14 00 02 BA 0 00E
+DDC01,analogValue,169,BA,02,par_comp_percent_load_02,CH-02 C2 % Load ,GL 14 00 02 BA 0 00F
+DDC01,analogValue,170,BA,02,par_suction_pressure_01,CH-02 C1 Evaporator Pressure,GL 14 00 02 BA 0 010
+DDC01,analogValue,171,BA,02,par_suction_pressure_02,CH-02 C2 Evaporator Pressure,GL 14 00 02 BA 0 011
+DDC01,analogValue,172,BA,02,par_discharge_pressure_01,CH-02 C1 Condensor Pressure,GL 14 00 02 BA 0 012
+DDC01,analogValue,173,BA,02,par_discharge_pressure_02,CH-02 C2 Condensor Pressure,GL 14 00 02 BA 0 013
+DDC01,analogValue,174,BA,02,par_suction_temperature_01,CH-02 C1 Suction Temperature,GL 14 00 02 BA 0 014
+DDC01,analogValue,175,BA,02,par_suction_temperature_02,CH-02 C2 Suction Temperature,GL 14 00 02 BA 0 015
+DDC01,analogValue,176,BA,02,par_discharge_temperature_01,CH-02 C1 Discharge Temperature,GL 14 00 02 BA 0 016
+DDC01,analogValue,177,BA,02,par_discharge_temperature_02,CH-02 C2 Discharge Temperature,GL 14 00 02 BA 0 017
+DDC01,analogValue,178,BA,02,par_comp_run_hrs_01,CH-02 C1 Run Hours,GL 14 00 02 BA 0 018
+DDC01,analogValue,179,BA,02,par_comp_run_hrs_02,CH-02 C2 Run Hours,GL 14 00 02 BA 0 019
+DDC01,analogValue,180,BA,02,par_comp_oil_pressure_01,CH-02 C1 Oil Pressure,GL 14 00 02 BA 0 01A
+DDC01,analogValue,181,BA,02,par_comp_oil_pressure_02,CH-02 C2 Oil Pressure,GL 14 00 02 BA 0 01B
+DDC01,analogValue,182,BA,02,par_exv_01,CH-02 C1 Exv,GL 14 00 02 BA 0 01C
+DDC01,analogValue,183,BA,02,par_exv_02,CH-02 C2 Exv,GL 14 00 02 BA 0 01D
+DDC01,analogValue,184,BA,02,par_avg_current_00,CH-02 Chiller Current,GL 14 00 02 BA 0 01E
+DDC01,analogValue,185,BA,02,alm_fault_00,CH-02 Fault Code,GL 14 00 02 BA A 01F
+DDC01,analogValue,186,B2,01,par_speed_00,PP-01 Speed,GL 14 00 01 B2 0 003
+DDC01,analogValue,187,B2,01,par_avg_power_00,PP-01 Motor Power,GL 14 00 01 B2 0 004
+DDC01,analogValue,188,B2,01,par_avg_voltage_00,PP-01 Motor Voltage,GL 14 00 01 B2 0 005
+DDC01,analogValue,189,B2,01,par_avg_current_00,PP-01 Motor Current,GL 14 00 01 B2 0 006
+DDC01,analogValue,190,B2,01,par_run_hours_00,PP-01 Run Hours,GL 14 00 01 B2 0 007
+DDC01,analogValue,191,B2,01,par_energy_00,PP-01 Energy,GL 14 00 01 B2 0 008
+DDC01,analogValue,192,B2,02,par_speed_00,PP-02 Speed,GL 14 00 02 B2 0 003
+DDC01,analogValue,193,B2,02,par_avg_power_00,PP-02 Motor Power,GL 14 00 02 B2 0 004
+DDC01,analogValue,194,B2,02,par_avg_voltage_00,PP-02 Motor Voltage,GL 14 00 02 B2 0 005
+DDC01,analogValue,195,B2,02,par_avg_current_00,PP-02 Motor Current,GL 14 00 02 B2 0 006
+DDC01,analogValue,196,B2,02,par_run_hours_00,PP-02 Run Hours,GL 14 00 02 B2 0 007
+DDC01,analogValue,197,B2,02,par_energy_00,PP-02 Energy,GL 14 00 02 B2 0 008
+DDC01,analogValue,198,B2,03,par_speed_00,PP-03 Speed,GL 14 00 03 B2 0 003
+DDC01,analogValue,199,B2,03,par_avg_power_00,PP-03 Motor Power,GL 14 00 03 B2 0 004
+DDC01,analogValue,200,B2,03,par_avg_voltage_00,PP-03 Motor Voltage,GL 14 00 03 B2 0 005
+DDC01,analogValue,201,B2,03,par_avg_current_00,PP-03 Motor Current,GL 14 00 03 B2 0 006
+DDC01,analogValue,202,B2,03,par_run_hours_00,PP-03 Run Hours,GL 14 00 03 B2 0 007
+DDC01,analogValue,203,B2,03,par_energy_00,PP-03 Energy,GL 14 00 03 B2 0 008
+DDC01,analogValue,204,A1,01,cmd_rat_sp_00,AHU-CR-01 RAT Set Point,GL 14 00 01 A1 0 00D
+DDC01,analogValue,205,A1,01,cmd_percent_rh_sp_00,AHU-CR-01 RH Point,GL 14 00 01 A1 0 00E
+DDC01,analogValue,206,A1,02,cmd_rat_sp_00,AHU-CR-02 RAT Set Point,GL 14 00 02 A1 0 00D
+DDC01,analogValue,207,A1,02,cmd_percent_rh_sp_00,AHU-CR-02 RH Point,GL 14 00 02 A1 0 00E
+DDC01,analogValue,208,A1,03,cmd_rat_sp_00,AHU-CR-03 RAT Set Point,GL 14 00 03 A1 0 00D
+DDC01,analogValue,209,A1,03,cmd_percent_rh_sp_00,AHU-CR-03 RH Point,GL 14 00 03 A1 0 00E
+DDC01,analogValue,210,A1,04,cmd_rat_sp_00,AHU-CR-04 RAT Set Point,GL 14 00 04 A1 0 00D
+DDC01,analogValue,211,A1,04,cmd_percent_rh_sp_00,AHU-CR-04 RH Point,GL 14 00 04 A1 0 00E
+DDC01,analogValue,212,A1,05,cmd_rat_sp_00,AHU-CR-05 RAT Set Point,GL 14 00 05 A1 0 00D
+DDC01,analogValue,213,A1,05,cmd_percent_rh_sp_00,AHU-CR-05 RH Point,GL 14 00 05 A1 0 00E
+DDC01,analogValue,214,A0,01,cmd_rat_sp_00,AHU-NCR-01 RAT Set Point,GL 14 00 01 A0 0 00B
+DDC01,analogValue,215,A0,02,cmd_rat_sp_00,AHU-NCR-02 RAT Set Point,GL 14 00 02 A0 0 00B
+DDC01,analogValue,216,A0,03,cmd_rat_sp_00,AHU-NCR-03 RAT Set Point,GL 14 00 03 A0 0 00B
+DDC01,analogValue,217,A0,04,cmd_rat_sp_00,AHU-NCR-04 RAT Set Point,GL 14 00 04 A0 0 00B
+DDC01,analogValue,218,C0,01,cmd_cwh_sup_temp_00,Chilled Water Supply Header Temperature Setpoint,GL 14 00 01 C0 0 009
+DDC01,analogValue,219,C0,01,cmd_hot_sup_temp_00,Hot Water Supply Header Temperature Setpoint,GL 14 00 01 C0 0 00A
+DDC01,analogValue,220,C0,01,par_actual_flow_00,Btu Meter Actual Flow,GL 14 00 01 C0 0 00B
+DDC01,analogValue,221,C0,01,par_actual_power_00,Btu Meter Actual Power,GL 14 00 01 C0 0 00C
+DDC01,analogValue,222,C0,01,par_energy_consump_00,Btu Meter Energy Consumption,GL 14 00 01 C0 0 00D
+DDC01,analogValue,223,C0,01,par_inlet_temp_00,Btu Meter Inlet Temperature,GL 14 00 01 C0 0 00E
+DDC01,analogValue,224,C0,01,par_outlet_temp_00,Btu Meter Outlet Temperature,GL 14 00 01 C0 0 00F
+DDC01,binaryValue,225,BA,01,sts_on_off_00,CH-01 Chiller On/Off status,GL 14 00 01 BA 0 004
+DDC01,binaryValue,226,BA,01,alm_trip_00,CH-01 Trip Status,GL 14 00 01 BA A 005
+DDC01,binaryValue,227,BA,01,sts_auto_manual_00,CH-01 Auto Manual Status,GL 14 00 01 BA 0 006
+DDC01,binaryValue,228,BA,01,sts_evap_flow_00,CH-01 Evap Flow Switch,GL 14 00 01 BA 0 00C
+DDC01,binaryValue,229,BA,02,alm_trip_00,CH-02 Trip Status,GL 14 00 02 BA A 005
+DDC01,binaryValue,230,BA,02,sts_on_off_00,CH-02 Chiller On/Off status,GL 14 00 02 BA 0 004
+DDC01,binaryValue,231,BA,02,sts_auto_manual_00,CH-02 Auto Manual Status,GL 14 00 02 BA 0 006
+DDC01,binaryValue,232,BA,02,sts_on_off_01,CH-02 C1 On/Off status,GL 14 00 02 BA 0 007
+DDC01,binaryValue,233,BA,02,sts_on_off_02,CH-02 C2 On/Off status,GL 14 00 02 BA 0 008
+DDC01,binaryValue,234,BA,02,sts_evap_flow_00,CH-02 Evap Flow Switch,GL 14 00 02 BA 0 00C
+DDC01,binaryValue,235,B2,01,sts_on_off_00,PP-01 On/Off status,GL 14 00 01 B2 0 002
+DDC01,binaryValue,236,B2,02,sts_on_off_00,PP-02 On/Off status,GL 14 00 02 B2 0 002
+DDC01,binaryValue,237,B2,03,sts_on_off_00,PP-03 On/Off status,GL 14 00 03 B2 0 002

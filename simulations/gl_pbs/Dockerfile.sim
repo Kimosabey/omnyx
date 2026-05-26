@@ -1,0 +1,22 @@
+FROM python:3.11-slim
+
+# Build deps needed for netifaces (C extension)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc python3-dev net-tools iproute2 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements-sim.txt ./
+RUN pip install --no-cache-dir -r requirements-sim.txt
+
+# Copy simulator source (copy from D:\Harshan\simulations\gl_pbs into this folder first)
+COPY . .
+
+RUN mkdir -p config data
+
+# Spawns one bacnet_name_simulator.py per DDC on ports 2001-2011
+# Writes config/GLBACpypes.ini with the controller map
+# Requires network_mode: host for BACnet UDP
+ENTRYPOINT ["python", "bacnet_name_launcher.py"]
