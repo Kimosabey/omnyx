@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     kafka_topic_raw: str = "telemetry.raw"
     kafka_topic_dq: str = "dq.events"
 
-    postgres_url: str = Field("postgresql://omnyx:change-me@localhost:5432/omnyx", env="POSTGRES_URL")
+    app_db_url: str = Field("postgresql://omnyx:change-me@localhost:5432/omnyx", env="APP_DB_URL")
 
     tenant_id: str = Field("unicharm", env="TENANT_ID")
 

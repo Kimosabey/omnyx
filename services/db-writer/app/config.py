@@ -9,8 +9,9 @@ class Settings(BaseSettings):
     kafka_topic_audit: str = "audit.events"
     kafka_topic_agent: str = "agent.activity"
 
-    postgres_url: str = Field(
-        "postgresql://omnyx:change-me@postgres:5432/omnyx", env="POSTGRES_URL"
+    # TimescaleDB connection — db-writer only writes telemetry, never app data
+    telemetry_db_url: str = Field(
+        "postgresql://omnyx:change-me@timescaledb:5432/omnyx_ts", env="TELEMETRY_DB_URL"
     )
 
     tenant_id: str = Field("unicharm", env="TENANT_ID")

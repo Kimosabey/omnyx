@@ -39,9 +39,9 @@ class DBWriter:
         retries = 0
         while True:
             try:
-                self._conn = psycopg2.connect(settings.postgres_url)
+                self._conn = psycopg2.connect(settings.telemetry_db_url)
                 self._conn.autocommit = False
-                log.info("Connected to Postgres")
+                log.info("Connected to TimescaleDB")
                 return
             except psycopg2.OperationalError as exc:
                 retries += 1

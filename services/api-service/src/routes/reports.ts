@@ -1,11 +1,11 @@
 import type { FastifyInstance } from "fastify";
-import { readQuery } from "../db";
+import { readQuery, telemetryQuery } from "../db";
 import { getTenantId } from "../auth";
 
 export async function reportRoutes(fastify: FastifyInstance) {
   const pre = { preHandler: [fastify.authenticate] };
 
-  // Daily operations report
+  // Daily operations report (mixes app DB and telemetry DB)
   fastify.get<{ Querystring: { date?: string } }>(
     "/api/v1/reports/daily", pre, async (req, reply) => {
       const tid = getTenantId(req);
@@ -30,8 +30,7 @@ export async function reportRoutes(fastify: FastifyInstance) {
            GROUP BY status, priority`,
           [tid, from, to],
         ),
-        readQuery(
-          tid,
+        telemetryQuery(
           `SELECT quality_flag, count(*) AS count
            FROM telemetry.readings
            WHERE tenant_id=$1 AND measured_at BETWEEN $2 AND $3
@@ -46,23 +45,35 @@ export async function reportRoutes(fastify: FastifyInstance) {
     },
   );
 
-  // Custom range report
+  // Custom range report (resolves equipment → points in app DB, then queries telemetry)
   fastify.get<{ Querystring: { from: string; to: string; equipment_id?: string } }>(
     "/api/v1/reports/custom", pre, async (req, reply) => {
       const tid = getTenantId(req);
       const { from, to, equipment_id } = req.query;
 
-      const readings = await readQuery(
-        tid,
-        `SELECT r.point_id, bucket, avg, high, low, sample_count
-         FROM telemetry.readings_1h r
-         WHERE r.tenant_id=$1 AND bucket BETWEEN $2 AND $3
-           AND ($4::text IS NULL OR r.point_id IN (
-             SELECT point_id FROM app.device_points WHERE equipment_id=$4))
-         ORDER BY point_id, bucket
-         LIMIT 10000`,
-        [tid, from, to, equipment_id || null],
-      );
+      let pointIds: string[] | null = null;
+      if (equipment_id) {
+        const rows = await readQuery<{ point_id: string }>(
+          tid,
+          `SELECT point_id FROM app.device_points WHERE equipment_id=$1 AND is_active=true`,
+          [equipment_id],
+        );
+        pointIds = rows.map((r) => r.point_id);
+        if (pointIds.length === 0) return reply.send({ data: { from, to, readings: [] } });
+      }
+
+      const sql = pointIds
+        ? `SELECT point_id, bucket, avg, high, low, sample_count
+           FROM telemetry.readings_1h
+           WHERE tenant_id=$1 AND bucket BETWEEN $2 AND $3 AND point_id = ANY($4::text[])
+           ORDER BY point_id, bucket LIMIT 10000`
+        : `SELECT point_id, bucket, avg, high, low, sample_count
+           FROM telemetry.readings_1h
+           WHERE tenant_id=$1 AND bucket BETWEEN $2 AND $3
+           ORDER BY point_id, bucket LIMIT 10000`;
+      const params: unknown[] = pointIds ? [tid, from, to, pointIds] : [tid, from, to];
+
+      const readings = await telemetryQuery(sql, params);
       reply.send({ data: { from, to, readings } });
     },
   );

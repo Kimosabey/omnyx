@@ -7,6 +7,7 @@ networks:
 volumes:
   kafka_data:
   pg_data:
+  ts_data:
   redis_data:
   keycloak_data:
   grafana_data:
@@ -81,9 +82,10 @@ services:
       - omnyx_net
     restart: unless-stopped
 
-  # ----- PostgreSQL 16 + TimescaleDB + pgvector ------------
+  # ----- PostgreSQL 16 (Primary App + Source DB) -----------
+  # Pure PostgreSQL 16 with pgvector — source.*, app.*, audit.*, embeddings.*
   postgres:
-    image: timescale/timescaledb:latest-pg16
+    image: pgvector/pgvector:pg16
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-omnyx}
       POSTGRES_USER: ${POSTGRES_USER:-omnyx}
@@ -93,6 +95,30 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ../postgres/migrations:/docker-entrypoint-initdb.d:ro
+      - ../../simulations/gl_pbs/data:/seeds:ro
+    networks:
+      - omnyx_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  # ----- TimescaleDB (Telemetry only) ----------------------
+  # TimescaleDB on PG16 — telemetry.* (hypertables, compression, retention)
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    environment:
+      POSTGRES_DB: ${TIMESCALE_DB:-omnyx_ts}
+      POSTGRES_USER: ${TIMESCALE_USER:-omnyx}
+      POSTGRES_PASSWORD: ${TIMESCALE_PASSWORD:-change-me}
+    ports:
+      - "${TIMESCALE_PORT:-5433}:5432"
+    volumes:
+      - ts_data:/var/lib/postgresql/data
+      - ../timescaledb/migrations:/docker-entrypoint-initdb.d:ro
     networks:
       - omnyx_net
     healthcheck:
@@ -224,7 +250,7 @@ services:
       - ../../simulations/gl_pbs/config/GLBACpypes.ini:/app/config/GLBACpypes.ini:ro
     environment:
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_EXTERNAL:-localhost:9095}
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@localhost:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-omnyx}
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@localhost:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-omnyx}
       BACNET_INI: /app/config/GLBACpypes.ini
       CSV_PATH: /app/data/eqp_name_handling.csv
       COV_THRESHOLD_PCT: "3"
@@ -244,14 +270,14 @@ services:
         condition: service_healthy
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
-      UNICHARM_MYSQL_URL: mysql://ro_user:${UNICHARM_RO_PW:-}@${UNICHARM_HOST:-}:3307/unicharm
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      # dal-replay reads source.ibms_readings from postgres — no MySQL needed
       TENANT_ID: ${TENANT_ID:-unicharm}
     networks:
       - omnyx_net
     restart: "no"
 
-  # ----- DB Writer -----------------------------------------
+  # ----- DB Writer (writes Kafka → TimescaleDB) ------------
   db-writer:
     profiles: ["app"]
     build:
@@ -259,11 +285,11 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-      postgres:
+      timescaledb:
         condition: service_healthy
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      TELEMETRY_DB_URL: postgresql://${TIMESCALE_USER:-omnyx}:${TIMESCALE_PASSWORD:-change-me}@timescaledb:5432/${TIMESCALE_DB:-omnyx_ts}
       KAFKA_GROUP_ID: db-writer
       TENANT_ID: ${TENANT_ID:-unicharm}
       METRICS_PORT: "8011"
@@ -279,8 +305,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      timescaledb:
+        condition: service_healthy
     environment:
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      TELEMETRY_DB_URL: postgresql://${TIMESCALE_USER:-omnyx}:${TIMESCALE_PASSWORD:-change-me}@timescaledb:5432/${TIMESCALE_DB:-omnyx_ts}
       TENANT_ID: ${TENANT_ID:-unicharm}
       METRICS_PORT: "8012"
     networks:
@@ -297,9 +326,12 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      timescaledb:
+        condition: service_healthy
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      TELEMETRY_DB_URL: postgresql://${TIMESCALE_USER:-omnyx}:${TIMESCALE_PASSWORD:-change-me}@timescaledb:5432/${TIMESCALE_DB:-omnyx_ts}
       KAFKA_GROUP_ID: twin-broker
       TENANT_ID: ${TENANT_ID:-unicharm}
       METRICS_PORT: "8013"
@@ -317,9 +349,12 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      timescaledb:
+        condition: service_healthy
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      TELEMETRY_DB_URL: postgresql://${TIMESCALE_USER:-omnyx}:${TIMESCALE_PASSWORD:-change-me}@timescaledb:5432/${TIMESCALE_DB:-omnyx_ts}
       KAFKA_GROUP_ID: rl-broker
       TENANT_ID: ${TENANT_ID:-unicharm}
       METRICS_PORT: "8014"
@@ -349,20 +384,22 @@ services:
       KEYCLOAK_TOKEN_URL: http://keycloak:8080/realms/omnyx/protocol/openid-connect/token
       KEYCLOAK_CLIENT_ID: omnyx-api
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_API_SECRET:-omnyx-api-secret-change-me}
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
       TENANT_ID: ${TENANT_ID:-unicharm}
       METRICS_PORT: "8015"
     networks:
       - omnyx_net
     restart: "no"
 
-  # ----- API Service (Fastify) -----------------------------
+  # ----- API Service (Fastify) — dual DB pool --------------
   api-service:
     profiles: ["app"]
     build:
       context: ../../services/api-service
     depends_on:
       postgres:
+        condition: service_healthy
+      timescaledb:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -374,7 +411,8 @@ services:
       - "${API_PORT:-8000}:8000"
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      POSTGRES_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      APP_DB_URL: postgresql://${POSTGRES_USER:-omnyx}:${POSTGRES_PASSWORD:-change-me}@postgres:5432/${POSTGRES_DB:-omnyx}
+      TELEMETRY_DB_URL: postgresql://${TIMESCALE_USER:-omnyx}:${TIMESCALE_PASSWORD:-change-me}@timescaledb:5432/${TIMESCALE_DB:-omnyx_ts}
       REDIS_URL: redis://redis:6379
       KEYCLOAK_JWKS_URL: http://keycloak:8080/realms/omnyx/protocol/openid-connect/certs
       KEYCLOAK_ISSUER: http://keycloak:8080/realms/omnyx

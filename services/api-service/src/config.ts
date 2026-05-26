@@ -3,7 +3,11 @@ export const config = {
   metricsPort:    parseInt(process.env.METRICS_PORT   ?? "9091"),
   nodeEnv:        process.env.NODE_ENV                ?? "development",
 
-  postgresUrl:    process.env.POSTGRES_URL            ?? "postgresql://omnyx:change-me@postgres:5432/omnyx",
+  // App / primary DB (source + app schemas)
+  appDbUrl:       process.env.APP_DB_URL              ?? "postgresql://omnyx:change-me@postgres:5432/omnyx",
+  // Telemetry DB (TimescaleDB) — read-only for charts/reports
+  telemetryDbUrl: process.env.TELEMETRY_DB_URL        ?? "postgresql://omnyx:change-me@timescaledb:5432/omnyx_ts",
+
   redisUrl:       process.env.REDIS_URL               ?? "redis://redis:6379",
   kafkaBrokers:   (process.env.KAFKA_BOOTSTRAP_SERVERS ?? "kafka:9092").split(","),
 
